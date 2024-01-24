@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.course_paper_client.controllers.MainController">
+   <children>
+      <VBox>
+         <children>
+            <HBox alignment="CENTER" spacing="10.0">
+               <children>
+                  <HBox fx:id="hbox_commands" alignment="CENTER_LEFT" spacing="10.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Button fx:id="btn_refresh_table" mnemonicParsing="false" text="Обновить" />
+                        <Button fx:id="btn_add_from_file" mnemonicParsing="false" prefHeight="26.0" text="Загрузить новые резюме">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Button>
+                        <Button fx:id="btn_deleted_all" mnemonicParsing="false" prefHeight="26.0" text="Удалить все">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Button>
+                        <Button fx:id="btn_open_filters" mnemonicParsing="false" prefHeight="26.0" text="Фильтры" textAlignment="CENTER">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Button>
+                        <Text fx:id="txt_btn_reset_filters" fill="#1a39ff" strokeType="OUTSIDE" strokeWidth="0.0" text="Сбросить" underline="true">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Text>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_RIGHT" spacing="10.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <TextField fx:id="field_search_text" prefHeight="26.0" prefWidth="203.0" promptText="Поиск по ФИО и должности">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                           <cursor>
+                              <Cursor fx:constant="DEFAULT" />
+                           </cursor>
+                        </TextField>
+                        <Button fx:id="btn_search" mnemonicParsing="false" prefHeight="26.0" prefWidth="58.0" text="Поиск">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Button>
+                     </children>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </HBox>
+                  <MenuButton fx:id="btn_menu_yet" mnemonicParsing="false" text="Ещё">
+                    <items>
+                      <MenuItem fx:id="btn_about_author" mnemonicParsing="false" text="Об авторе" />
+                        <MenuItem fx:id="btn_users" mnemonicParsing="false" text="Пользователи" />
+                      <MenuItem fx:id="btn_logout" mnemonicParsing="false" text="Выход из системы" />
+                    </items>
+                  </MenuButton>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
+               </VBox.margin>
+            </HBox>
+            <TableView fx:id="table" style="-fx-background-color: white;">
+              <columns>
+                <TableColumn id="table_row_number" fx:id="table_column_number" prefWidth="29.600006103515625" text="Id" />
+                <TableColumn id="table_row_lastname" fx:id="table_column_lastname" prefWidth="120.80001831054688" sortable="false" text="Фамилия" />
+                  <TableColumn fx:id="table_column_firstname" prefWidth="102.4000244140625" text="Имя" />
+                  <TableColumn fx:id="table_column_gender" minWidth="9.5999755859375" prefWidth="34.4000244140625" text="Пол" />
+                  <TableColumn fx:id="table_column_age" prefWidth="57.60003662109375" text="Возраст" />
+                  <TableColumn fx:id="table_column_area" prefWidth="68.0" text="Город" />
+                  <TableColumn fx:id="table_column_post" prefWidth="106.39999389648438" text="Должность" />
+                  <TableColumn fx:id="table_column_salary" prefWidth="71.199951171875" text="Зарплата" />
+                  <TableColumn fx:id="table_column_phone" prefWidth="88.0" text="Телефон" />
+                  <TableColumn fx:id="table_column_email" prefWidth="75.0" text="Email" />
+                  <TableColumn fx:id="table_column_education_level" prefWidth="75.0" text="Образование" />
+                  <TableColumn fx:id="table_column_status" prefWidth="75.0" text="Статус" />
+                  <TableColumn fx:id="table_column_rating" prefWidth="75.0" text="Рейтинг" />
+              </columns>
+            </TableView>
+         </children>
+         <padding>
+            <Insets bottom="10.0" />
+         </padding>
+      </VBox>
+   </children>
+</AnchorPane>

@@ -1,13 +1,21 @@
 package com.example.course_paper_client.controllers;
 
+import com.example.course_paper_client.HelloApplication;
+import com.example.course_paper_client.exceptions.ApiResponseException;
 import com.example.course_paper_client.exceptions.NoConnectionException;
 import com.example.course_paper_client.services.MainServiceApi;
+import com.example.course_paper_client.utils.DataSingleton;
+import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import org.json.JSONException;
 
@@ -18,12 +26,16 @@ import java.util.ResourceBundle;
 public class AuthController {
 
     private static String token = "";
+    private final String errorTxtFieldStyle = "-fx-border-color: red; -fx-border-width: 0 0 0 2;";
 
     @FXML
     private ResourceBundle resources;
 
     @FXML
     private URL location;
+
+    @FXML
+    private HBox main_container;
 
     @FXML
     private Button btn_sign_in;
@@ -35,7 +47,7 @@ public class AuthController {
     private Text lp_error_msg;
 
     @FXML
-    private TextField lp_password;
+    private PasswordField lp_password;
 
     @FXML
     private Text lp_txt_btn_sign_in;
@@ -44,19 +56,13 @@ public class AuthController {
     private TextField lp_username;
 
     @FXML
-    private AnchorPane page_login;
-
-    @FXML
-    private AnchorPane page_regisrtation;
+    private ImageView preview_img;
 
     @FXML
     private TextField sp_email;
 
     @FXML
     private Text sp_error_msg;
-
-    @FXML
-    private ImageView preview_img;
 
     @FXML
     private TextField sp_first_name;
@@ -74,23 +80,56 @@ public class AuthController {
     private Text txt_btn_login;
 
     @FXML
+    private VBox vbox_page_login;
+
+    @FXML
+    private VBox vbox_page_registration;
+
+    DataSingleton data = DataSingleton.getInstance();
+
+    @FXML
     void initialize() {
+        main_container.getChildren().remove(vbox_page_registration);
         initErrorMsg();
+        initTxtFields();
+        preview_img.setImage(new Image("hr-generalist_1.jpg"));
+        preview_img.setPreserveRatio(false);
 
         lp_txt_btn_sign_in.setOnMouseClicked(mouseEvent -> {
             initErrorMsg();
+            initTxtFields();
             visiblePageLogin(false);
-            visiblePageSignIn(true);
         });
         txt_btn_login.setOnMouseClicked(mouseEvent -> {
             initErrorMsg();
+            initTxtFields();
             visiblePageLogin(true);
-            visiblePageSignIn(false);
         });
 
-        btn_sign_in.setOnMouseClicked(mouseEvent -> {
-            initErrorMsg();
-            checkRequiredFieldInSignInPage();
+        btn_sign_in.setOnAction(this::onClickBtnSignIn);
+        lp_btn_login.setOnAction(this::onClickBtnLogin);
+    }
+
+    public void onClickBtnLogin(Event event) {
+        initTxtFields();
+        initErrorMsg();
+        if (checkRequiredFieldInLoginPage()) {
+            try {
+                token = MainServiceApi.login(getStringByTextField(lp_username), getStringByTextField(lp_password));
+                lp_error_msg.setVisible(false);
+                data.setResumes(MainServiceApi.getAllResumes(token, null));
+                changeScene();
+            } catch (NoConnectionException | ApiResponseException | IOException | JSONException e) {
+                lp_error_msg.setVisible(true);
+                lp_error_msg.setText(e.getMessage());
+            }
+        }
+    }
+
+    public void onClickBtnSignIn(Event event) {
+        initTxtFields();
+        initErrorMsg();
+        if (checkRequiredFieldInSignInPage()) {
             try {
                 token = MainServiceApi.registration(
                         getStringByTextField(sp_last_name),
@@ -99,59 +138,35 @@ public class AuthController {
                         getStringByTextField(sp_password),
                         getStringByTextField(sp_password_repeat));
                 sp_error_msg.setVisible(false);
-//                initNewStage();
-            } catch (NoConnectionException | IOException e) {
-                sp_error_msg.setVisible(true);
-                sp_error_msg.setText(addErrorMsg("Сервер не доступен! Повторите запрос позже!", sp_error_msg.getText().trim()));
-            } catch (JSONException e) {
-                sp_error_msg.setVisible(true);
-                sp_error_msg.setText(addErrorMsg("Неизвестная ошибка! Для тех. поддержки: ошибка при десериализации в методе MainServiceApi.registration", sp_error_msg.getText().trim()));
-            }
-        });
-        lp_btn_login.setOnMouseClicked(mouseEvent -> {
-            initErrorMsg();
-            checkRequiredFieldInLoginPage();
-            try {
-                token = MainServiceApi.login(getStringByTextField(lp_username), getStringByTextField(lp_password));
-                lp_error_msg.setVisible(false);
-//                initNewStage();
-            } catch (NoConnectionException | IOException e) {
+                data.setResumes(MainServiceApi.getAllResumes(token, null));
+                changeScene();
+            } catch (NoConnectionException | ApiResponseException | IOException | JSONException e) {
                 lp_error_msg.setVisible(true);
-                lp_error_msg.setText(addErrorMsg("Сервер не доступен! Повторите запрос позже!", lp_error_msg.getText().trim()));
-            } catch (JSONException e) {
-                lp_error_msg.setVisible(true);
-                lp_error_msg.setText(addErrorMsg("Неизвестная ошибка! Для тех. поддержки: ошибка при десериализации в методе MainServiceApi.login", lp_error_msg.getText().trim()));
+                lp_error_msg.setText(e.getMessage());
             }
-        });
+        }
     }
 
-    private void initNewStage() {
-//        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("main-view.fxml"));
-//        Scene scene = new Scene(fxmlLoader.load());
-//        Stage stage = new Stage();
-//        stage.initModality(Modality.APPLICATION_MODAL);
-//        stage.setOpacity(1);
-//        stage.setTitle("HR Assistant");
-//
-//        MainController mainController = fxmlLoader.getController();
-//        mainController.setStartData(MainServiceApi.getAll(token, null));
-//
-//        stage.setScene(scene);
-//        stage.show();
+    private void changeScene() throws IOException {
+        data.setToken(token);
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("main-view.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        HelloApplication.changeScene(scene);
     }
 
     /**
-     * Метод скрывает или отображает страницу авторизации
+     * Метод в зависимости от получаемого boolean параметра отображает необходимое окно.
+     * Если true, то окно авторизации, иначе окно регистрации.
      *
      * @param state Boolean если true, то отображать, иначе скрывать страницу
      */
     private void visiblePageLogin(boolean state) {
         if (state) {
-            page_login.setDisable(false);
-            page_login.setVisible(true);
+            main_container.getChildren().add(vbox_page_login);
+            main_container.getChildren().remove(vbox_page_registration);
         } else {
-            page_login.setDisable(true);
-            page_login.setVisible(false);
+            main_container.getChildren().add(vbox_page_registration);
+            main_container.getChildren().remove(vbox_page_login);
         }
     }
 
@@ -159,88 +174,84 @@ public class AuthController {
      * Метод инициализирует поле error_msg
      */
     private void initErrorMsg() {
-        lp_error_msg.setText("");
+        lp_error_msg.setWrappingWidth(200);
+        sp_error_msg.setWrappingWidth(200);
+
+        if (data.getTextErrorByAuth() == null || data.getTextErrorByAuth().isEmpty()) {
+            lp_error_msg.setText("");
+            lp_error_msg.setVisible(false);
+        } else {
+            lp_error_msg.setText(data.getTextErrorByAuth());
+            lp_error_msg.setVisible(true);
+            data.setTextErrorByAuth("");
+        }
         sp_error_msg.setText("");
-        lp_error_msg.setVisible(false);
         sp_error_msg.setVisible(false);
     }
 
     /**
-     * Метод скрывает или отображает страницу регистрации
-     *
-     * @param state Boolean если true, то отображать, иначе скрывать страницу
+     * Метод инициализирует все текстовые поля
      */
-    private void visiblePageSignIn(boolean state) {
-        if (state) {
-            page_regisrtation.setDisable(false);
-            page_regisrtation.setVisible(true);
-        } else {
-            page_regisrtation.setDisable(true);
-            page_regisrtation.setVisible(false);
-        }
+    private void initTxtFields() {
+        sp_last_name.setStyle("");
+        sp_first_name.setStyle("");
+        sp_email.setStyle("");
+        sp_password.setStyle("");
+        sp_password_repeat.setStyle("");
+
+        lp_username.setStyle("");
+        lp_password.setStyle("");
     }
 
     /**
      * Метод проверяет заполнение обязательных полей на странице авторизации
      * В случае незаполнения выводит ошибку в интерфейс
      */
-    private void checkRequiredFieldInLoginPage() {
+    private boolean checkRequiredFieldInLoginPage() {
+        boolean result = true;
         if (getStringByTextField(lp_username).isBlank()) {
-            lp_error_msg.setVisible(true);
-            lp_error_msg.setText(addErrorMsg("Поле 'Эл. почта' не может быть пустым!", lp_error_msg.getText().trim()));
+            lp_username.setStyle(errorTxtFieldStyle);
+            result = false;
         }
         if (getStringByTextField(lp_password).isBlank()) {
-            lp_error_msg.setVisible(true);
-            lp_error_msg.setText(addErrorMsg("Поле 'Пароль' не может быть пустым!", lp_error_msg.getText().trim()));
+            lp_password.setStyle(errorTxtFieldStyle);
+            result = false;
         }
+
+        return result;
     }
 
     /**
      * Метод проверяет заполнение обязательных полей на странице регистрации
      * В случае незаполнения выводит ошибку в интерфейс
      */
-    private void checkRequiredFieldInSignInPage() {
+    private boolean checkRequiredFieldInSignInPage() {
+        boolean result = true;
         if (getStringByTextField(sp_last_name).isBlank()) {
-            sp_error_msg.setVisible(true);
-            sp_error_msg.setText(addErrorMsg("Поле 'Фамилия' не может быть пустым!", sp_error_msg.getText().trim()));
+            sp_last_name.setStyle(errorTxtFieldStyle);
+            result = false;
         }
         if (getStringByTextField(sp_first_name).isBlank()) {
-            sp_error_msg.setVisible(true);
-            sp_error_msg.setText(addErrorMsg("Поле 'Имя' не может быть пустым!", sp_error_msg.getText().trim()));
+            sp_first_name.setStyle(errorTxtFieldStyle);
+            result = false;
         }
         if (getStringByTextField(sp_email).isBlank()) {
-            sp_error_msg.setVisible(true);
-            sp_error_msg.setText(addErrorMsg("Поле 'Эл. почта' не может быть пустым!", sp_error_msg.getText().trim()));
+            sp_email.setStyle(errorTxtFieldStyle);
+            result = false;
         }
         if (getStringByTextField(sp_password).isBlank()) {
-            sp_error_msg.setVisible(true);
-            sp_error_msg.setText(addErrorMsg("Поле 'Пароль' не может быть пустым!", sp_error_msg.getText().trim()));
+            sp_password.setStyle(errorTxtFieldStyle);
+            result = false;
         }
-        if (getStringByTextField(sp_password_repeat).isBlank()) {
+        if (getStringByTextField(sp_password_repeat).equals("") || !getStringByTextField(sp_password).equals(getStringByTextField(sp_password_repeat))) {
             sp_error_msg.setVisible(true);
-            sp_error_msg.setText(addErrorMsg("Поле 'Повторите пароль' не может быть пустым!", sp_error_msg.getText().trim()));
-        }
-        if (!getStringByTextField(sp_password).equals(getStringByTextField(sp_password_repeat))) {
-            sp_error_msg.setVisible(true);
-            sp_error_msg.setText(addErrorMsg("Пароли не совпадают!", sp_error_msg.getText().trim()));
-        }
-    }
-
-    /**
-     * Метод возвращает преобразованный текст ошибки для последующего вывода его на экран.
-     *
-     * @param msg      String текст ошибки, которую необходимо добавить в errorMsg
-     * @param errorMsg String текст ошибки, которая уже отображается на экране
-     * @return String
-     */
-    private String addErrorMsg(String msg, String errorMsg) {
-        if (!errorMsg.isBlank()) {
-            errorMsg = errorMsg + "\n";
+            sp_password.setStyle(errorTxtFieldStyle);
+            sp_password_repeat.setStyle(errorTxtFieldStyle);
+            sp_error_msg.setText("Пароли не совпадают!");
+            result = false;
         }
 
-        errorMsg = errorMsg + msg;
-
-        return errorMsg;
+        return result;
     }
 
     /**
