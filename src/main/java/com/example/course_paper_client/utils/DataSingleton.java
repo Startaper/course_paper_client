@@ -8,6 +8,9 @@ import javafx.stage.Stage;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Класс util-ит типа, предназначен для хранения данных передаваемых между окнами приложения.
+ */
 public class DataSingleton {
 
     public static final DataSingleton instance = new DataSingleton();

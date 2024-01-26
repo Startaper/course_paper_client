@@ -321,8 +321,7 @@ public class ResumeController {
         txt_skills.setText(resume.getSkills());
         txt_work_tickets.setText(resume.getWorkTickets());
         if (resume.getSpecializations() != null && !resume.getSpecializations().isEmpty()) {
-            txt_specializations.setText(MainUtil.convertListToString(
-                    resume.getSpecializations().stream().map(Specialization::getName).toList()));
+            txt_specializations.setText(resume.getSpecializations());
         }
         if (resume.getLanguages() != null && !resume.getLanguages().isEmpty()) {
             txt_languages.setText(MainUtil.convertListToString(

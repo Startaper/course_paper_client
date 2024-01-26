@@ -14,7 +14,7 @@ import java.net.*;
 import java.nio.charset.StandardCharsets;
 
 /**
- * Класс-утилита для отправки REST запросов и принятия ответов
+ * Класс-утилита для отправки REST запросов и получения ответов
  */
 public class HTTP {
 
@@ -23,10 +23,13 @@ public class HTTP {
     /**
      * Отправляет GET-запроса по указанному url-адресу и возвращает ответ
      *
-     * @param urlString String
-     * @param token     String
-     * @return String
+     * @param urlString String url-адрес на который отправляется запрос.
+     * @param token     String токен-ключ для доступа к API
+     * @return String ответ сервера на запрос
      * @throws NoConnectionException если при соединении возникли ошибки
+     * @throws JSONException         если при парсинге ответа от сервера возникли ошибки
+     * @throws ApiResponseException  возвращается в том случае, если отправлен невалидный токен
+     *                               или возникли ошибки на сервере при обработке запроса
      */
     public static String GetRequest(String urlString, String token) throws NoConnectionException, JSONException, ApiResponseException {
         try {
@@ -43,7 +46,7 @@ public class HTTP {
                 throw new ApiResponseException("Не валидный токен!");
             }
 
-            switch (code /100) {
+            switch (code / 100) {
                 case 2 -> {
                     StringBuilder sb = new StringBuilder();
                     InputStream is = new BufferedInputStream(conn.getInputStream());
@@ -79,10 +82,13 @@ public class HTTP {
     /**
      * Отправляет POST-запроса и возвращает ответ
      *
-     * @param link       String
-     * @param jsonObject JSONObject
-     * @return String
+     * @param link       String url-адрес на который отправляется запрос.
+     * @param jsonObject JSONObject объект, который необходимо отправить на сервер
+     * @return String ответ сервера на запрос
      * @throws NoConnectionException если при соединении возникли ошибки
+     * @throws JSONException         если при парсинге ответа от сервера возникли ошибки
+     * @throws ApiResponseException  возвращается в том случае, если отправлен невалидный токен
+     *                               или возникли ошибки на сервере при обработке запроса
      */
     public static String Post(String link, JSONObject jsonObject)
             throws NoConnectionException, ApiResponseException, JSONException {
@@ -136,12 +142,14 @@ public class HTTP {
     /**
      * Отправляет POST-запроса и возвращает ответ
      *
-     * @param link      String
-     * @param jsonArray JSONArray
-     * @param token     String
-     * @return String
+     * @param link      String url-адрес на который отправляется запрос.
+     * @param jsonArray JSONArray объект, который необходимо отправить на сервер
+     * @param token     String токен-ключ для доступа к API
+     * @return String ответ сервера на запрос
      * @throws NoConnectionException если при соединении возникли ошибки
      * @throws JSONException         если при парсинге ответа от сервера возникли ошибки
+     * @throws ApiResponseException  возвращается в том случае, если отправлен невалидный токен
+     *                               или возникли ошибки на сервере при обработке запроса
      */
     public static String Post(String link, JSONArray jsonArray, String token)
             throws NoConnectionException, JSONException, ApiResponseException {
@@ -207,11 +215,13 @@ public class HTTP {
     /**
      * Отправляет POST-запроса и возвращает ответ
      *
-     * @param link       String
-     * @param jsonObject JSONObject
-     * @param token      String
-     * @return String
+     * @param link       String url-адрес на который отправляется запрос.
+     * @param jsonObject JSONObject объект, который необходимо отправить на сервер
+     * @param token      String токен-ключ для доступа к API
+     * @return String ответ сервера на запрос
      * @throws NoConnectionException если при соединении возникли ошибки
+     * @throws ApiResponseException  возвращается в том случае, если отправлен невалидный токен
+     *                               или возникли ошибки на сервере при обработке запроса
      * @throws JSONException         если при парсинге ответа от сервера возникли ошибки
      */
     public static String Post(String link, JSONObject jsonObject, String token)
@@ -278,10 +288,13 @@ public class HTTP {
     /**
      * Отправляет PUT-запроса и возвращает ответ
      *
-     * @param urlString String
-     * @param token     String
-     * @return String
+     * @param urlString String url-адрес на который отправляется запрос.
+     * @param token     String токен-ключ для доступа к API
+     * @return String ответ сервера на запрос
      * @throws NoConnectionException если при соединении возникли ошибки
+     * @throws JSONException         если при десериализации возвращаемого ответа возникли ошибки
+     * @throws ApiResponseException  возвращается в том случае, если отправлен невалидный токен
+     *                               или возникли ошибки на сервере при обработке запроса
      */
     public static String PutRequest(String urlString, JSONObject jsonObject, String token) throws NoConnectionException, ApiResponseException, JSONException {
         try {
@@ -346,9 +359,12 @@ public class HTTP {
     /**
      * Отправляет DELETE-запроса и возвращает ответ
      *
-     * @param urlString String
-     * @param token     String
+     * @param urlString String url-адрес на который отправляется запрос.
+     * @param token     String токен-ключ для доступа к API
      * @throws NoConnectionException если при соединении возникли ошибки
+     * @throws JSONException         если при десериализации возвращаемого ответа возникли ошибки
+     * @throws ApiResponseException  возвращается в том случае, если отправлен невалидный токен
+     *                               или возникли ошибки на сервере при обработке запроса
      */
     public static void DeleteRequest(String urlString, String token) throws NoConnectionException, JSONException, ApiResponseException {
         try {
@@ -370,7 +386,8 @@ public class HTTP {
             }
 
             switch (code / 100) {
-                case 2 -> {}
+                case 2 -> {
+                }
                 case 4 -> {
                     StringBuilder sb = new StringBuilder();
                     InputStream is = new BufferedInputStream(http.getErrorStream());

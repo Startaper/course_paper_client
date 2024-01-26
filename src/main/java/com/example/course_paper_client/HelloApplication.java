@@ -33,12 +33,27 @@ public class HelloApplication extends Application {
         launch();
     }
 
+    /**
+     * Метод меняет текущую сцену на полученную из параметра
+     *
+     * @param scene Scene, новая сцена
+     */
     public static void changeScene(Scene scene) {
         stageMain.setScene(scene);
         stageMain.show();
     }
 
-    public static void openNewStage(String viewFxml, String title, boolean resizable, StageStyle style, Modality modality, boolean isWarningStage) throws IOException {
+    /**
+     * Метод открывает новое окно по заданным параметрам
+     *
+     * @param viewFxml файл с fxml разметкой
+     * @param title String, название показываемого окна
+     * @param resizable возможность изменять размер окна
+     * @param style стиль отображаемого окна
+     * @param modality формат показываемого окна
+     * @throws IOException если возникли ошибки при открытии окна.
+     */
+    public static void openNewStage(String viewFxml, String title, boolean resizable, StageStyle style, Modality modality) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource(viewFxml));
         Scene scene = new Scene(fxmlLoader.load());
         Stage stage = new Stage(style);
@@ -46,14 +61,18 @@ public class HelloApplication extends Application {
         stage.setResizable(resizable);
         stage.setScene(scene);
         stage.initModality(modality);
-        if (!isWarningStage) {
-            data.setOpeningStage(stage);
-        } else {
-            data.setWarningStage(stage);
-        }
+        data.setOpeningStage(stage);
         stage.showAndWait();
     }
 
+    /**
+     * Метод показывает информационное окно
+     *
+     * @param title String, название показываемого окна
+     * @param alertType AlertType, тип всплывающего окна
+     * @param headerText String, заголовок
+     * @param message String, основной текст
+     */
     public static void showAlert(String title, Alert.AlertType alertType, String headerText, String message) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
@@ -62,6 +81,15 @@ public class HelloApplication extends Application {
         alert.show();
     }
 
+    /**
+     * Метод показывает предупреждающее окно и возвращает информацию о том, какаю кнопку нажали.
+     *
+     * @param title String, название показываемого окна
+     * @param alertType AlertType, тип всплывающего окна
+     * @param headerText String, заголовок
+     * @param message String, основной текст
+     * @return ButtonType
+     */
     public static ButtonType showWarningAlert(String title, Alert.AlertType alertType, String headerText, String message) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);

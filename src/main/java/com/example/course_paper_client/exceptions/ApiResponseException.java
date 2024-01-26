@@ -1,14 +1,14 @@
 package com.example.course_paper_client.exceptions;
 
+/**
+ * Класс исключения, когда возвращается ошибка о невалидном токене
+ * или возникли ошибки на сервере при обработке запроса
+ */
 public class ApiResponseException extends Exception {
-
     /**
-     * Constructs a new exception with the specified detail message.  The
-     * cause is not initialized, and may subsequently be initialized by
-     * a call to {@link #initCause}.
+     * Инициализатор класса, использующий наследуемый метод
      *
-     * @param message the detail message. The detail message is saved for
-     *                later retrieval by the {@link #getMessage()} method.
+     * @param message сообщение, которое необходимо отобразить в ошибке
      */
     public ApiResponseException(String message) {
         super(message);

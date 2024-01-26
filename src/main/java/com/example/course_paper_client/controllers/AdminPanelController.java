@@ -158,8 +158,7 @@ public class AdminPanelController {
                 "Добавление нового пользователя",
                 false,
                 StageStyle.DECORATED,
-                Modality.APPLICATION_MODAL,
-                false);
+                Modality.APPLICATION_MODAL);
     }
 
     private void openUserItem(User user) throws IOException {
@@ -169,8 +168,7 @@ public class AdminPanelController {
                 "Пользователь",
                 false,
                 StageStyle.UNDECORATED,
-                Modality.APPLICATION_MODAL,
-                false);
+                Modality.APPLICATION_MODAL);
     }
 
     private void changeScene(String fxmlFileName) throws IOException {

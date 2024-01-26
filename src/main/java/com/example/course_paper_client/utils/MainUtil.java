@@ -21,7 +21,7 @@ public final class MainUtil {
      * Метод возвращает строку с json, прочитанный из получаемого файла
      *
      * @param file String url-адрес файла
-     * @return String
+     * @return String прочитанный файл
      * @throws IOException если при чтении файла возникли ошибки
      */
     public static String readJsonFile(File file) throws IOException {
@@ -43,6 +43,13 @@ public final class MainUtil {
         return result.toString();
     }
 
+    /**
+     * Метод возвращает объект типа Contact в зависемости от указанных параметров
+     *
+     * @param contacts список всех контактов, среди которых необходимо найти соответствующий условию параметра 2
+     * @param type тип параметра, который требуется вернуть
+     * @return Contact
+     */
     public static Contact getContactByContactType(List<Contact> contacts, ContactType type) {
         contacts = contacts.stream().filter(e -> e.getType() == type).toList();
         if (contacts.size() == 0) {
@@ -51,6 +58,12 @@ public final class MainUtil {
         return contacts.get(0);
     }
 
+    /**
+     * Метод преобразует список строк в кастомизированную строку
+     *
+     * @param list Список строк, который необходимо преобразовать
+     * @return String преобразованная строка
+     */
     public static String convertListToString(List<String> list) {
         if (list == null || list.isEmpty()) {
             return "";
@@ -67,8 +80,8 @@ public final class MainUtil {
     /**
      * Метод конвертирует получаемый jsonArray в список соц. сетей
      *
-     * @param jsonArray JSONArray
-     * @return List<>
+     * @param jsonArray JSONArray массив json-объектов для преобразования в список
+     * @return List<Site>
      * @throws JSONException если при парсинге json возникли ошибки
      */
     public static List<Site> convertJsonArrayToSiteList(JSONArray jsonArray) throws JSONException {
@@ -85,8 +98,8 @@ public final class MainUtil {
     /**
      * Метод конвертирует получаемый jsonArray в список контактов
      *
-     * @param jsonArray JSONArray
-     * @return List<>
+     * @param jsonArray JSONArray массив json-объектов для преобразования в список
+     * @return List<Contact>
      * @throws JSONException если при парсинге json возникли ошибки
      */
     public static List<Contact> convertJsonArrayToContactList(JSONArray jsonArray) throws JSONException {
@@ -103,8 +116,8 @@ public final class MainUtil {
     /**
      * Метод конвертирует получаемый jsonArray в список языков
      *
-     * @param jsonArray JSONArray
-     * @return List<>
+     * @param jsonArray JSONArray массив json-объектов для преобразования в список
+     * @return List<Language>
      * @throws JSONException если при парсинге json возникли ошибки
      */
     public static List<Language> convertJsonArrayToLanguageList(JSONArray jsonArray) throws JSONException {
@@ -121,8 +134,8 @@ public final class MainUtil {
     /**
      * Метод конвертирует получаемый jsonArray в список образований
      *
-     * @param jsonArray JSONArray
-     * @return List<>
+     * @param jsonArray JSONArray массив json-объектов для преобразования в список
+     * @return List<Education>
      * @throws JSONException если при парсинге json возникли ошибки
      */
     public static List<Education> convertJsonArrayToEducationList(JSONArray jsonArray) throws JSONException {
@@ -139,8 +152,8 @@ public final class MainUtil {
     /**
      * Метод конвертирует получаемый jsonArray в список, содержащий информацию об опыте работы соискателя.
      *
-     * @param jsonArray JSONArray
-     * @return List<>
+     * @param jsonArray JSONArray массив json-объектов для преобразования в список
+     * @return List<Experience>
      * @throws JSONException если при парсинге json возникли ошибки
      */
     public static List<Experience> convertJsonArrayToExperienceList(JSONArray jsonArray) throws JSONException {
@@ -155,28 +168,10 @@ public final class MainUtil {
     }
 
     /**
-     * Метод конвертирует получаемый jsonArray в список специализаций
-     *
-     * @param jsonArray JSONArray
-     * @return List<>
-     * @throws JSONException если при парсинге json возникли ошибки
-     */
-    public static List<Specialization> convertJsonArrayToSpecializationList(JSONArray jsonArray) throws JSONException {
-        if (jsonArray == null || jsonArray.length() == 0) {
-            return null;
-        }
-        List<Specialization> result = new ArrayList<>();
-        for (int i = 0; i < jsonArray.length(); i++) {
-            result.add(new Specialization(jsonArray.getJSONObject(i)));
-        }
-        return result;
-    }
-
-    /**
      * Метод конвертирует получаемый jsonArray в список рекомендаций
      *
-     * @param jsonArray JSONArray
-     * @return List<>
+     * @param jsonArray JSONArray массив json-объектов для преобразования в список
+     * @return List<Recommendation>
      * @throws JSONException если при парсинге json возникли ошибки
      */
     public static List<Recommendation> convertJsonArrayToRecommendationList(JSONArray jsonArray) throws JSONException {

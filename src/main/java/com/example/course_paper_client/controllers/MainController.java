@@ -288,8 +288,7 @@ public class MainController {
                 "Фильтры",
                 false,
                 StageStyle.UNDECORATED,
-                Modality.APPLICATION_MODAL,
-                false);
+                Modality.APPLICATION_MODAL);
     }
 
     private void openResumeStage(Resume resume) throws IOException {
@@ -299,8 +298,7 @@ public class MainController {
                 "Резюме",
                 false,
                 StageStyle.UNDECORATED,
-                Modality.APPLICATION_MODAL,
-                false);
+                Modality.APPLICATION_MODAL);
     }
 
     private void fillTable() {

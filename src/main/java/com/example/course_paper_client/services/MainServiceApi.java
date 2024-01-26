@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Класс-утилита для генерации url-запросов, а также для авторизации и регистрации.
+ * Класс-утилита для генерации url-запросов, а также для авторизации и регистрации в API.
  */
 public class MainServiceApi {
 
@@ -45,6 +45,8 @@ public class MainServiceApi {
      * @throws NoConnectionException если при соединении возникли ошибки
      * @throws IOException           если при соединении возникли ошибки
      * @throws JSONException         если при десериализации возвращаемого ответа возникли ошибки
+     * @throws ApiResponseException  возвращается в том случае, если отправлен невалидный токен
+     *                               или возникли ошибки на сервере при обработке запроса
      */
     public static String login(String username, String password) throws NoConnectionException, ApiResponseException, IOException, JSONException {
         JSONObject result;
@@ -72,6 +74,8 @@ public class MainServiceApi {
      * @throws NoConnectionException если при соединении возникли ошибки
      * @throws IOException           если при соединении возникли ошибки
      * @throws JSONException         если при десериализации возвращаемого ответа возникли ошибки
+     * @throws ApiResponseException  возвращается в том случае, если отправлен невалидный токен
+     *                               или возникли ошибки на сервере при обработке запроса
      */
     public static String registration(String lastName, String firstName, String email, String password, String passwordRepeat)
             throws NoConnectionException, IOException, ApiResponseException, JSONException {
@@ -99,6 +103,8 @@ public class MainServiceApi {
      * @throws NoConnectionException если при соединении возникли ошибки
      * @throws IOException           если при соединении или чтении файла возникли ошибки
      * @throws JSONException         если при десериализации возвращаемого ответа возникли ошибки
+     * @throws ApiResponseException  возвращается в том случае, если отправлен невалидный токен
+     *                               или возникли ошибки на сервере при обработке запроса
      */
     public static void addResumes(File file, String token) throws JSONException, IOException, NoConnectionException, ApiResponseException {
         JSONArray jsonArrayRequest = new JSONArray(MainUtil.readJsonFile(file));
@@ -106,13 +112,16 @@ public class MainServiceApi {
     }
 
     /**
-     * Метод отправляет запрос на получение всех объекты, хранящиеся в БД, по заданным фильтрам.
+     * Метод отправляет запрос на получение всех резюме, хранящиеся в БД, по заданным фильтрам.
+     * Если фильтры пустые, возвращает все резюме.
      *
      * @param token   String ключ-доступа к API
      * @param filters Map<String, String> фильтры
      * @return Resume
      * @throws NoConnectionException если при соединении возникли ошибки
      * @throws JSONException         если при десериализации возвращаемого ответа возникли ошибки
+     * @throws ApiResponseException  возвращается в том случае, если отправлен невалидный токен
+     *                               или возникли ошибки на сервере при обработке запроса
      */
     public static List<Resume> getAllResumes(String token, Map<String, String> filters) throws NoConnectionException, JSONException, ApiResponseException, IOException {
         List<Resume> resumes = new ArrayList<>();
@@ -143,6 +152,8 @@ public class MainServiceApi {
      * @return Resume
      * @throws NoConnectionException если при соединении возникли ошибки
      * @throws JSONException         если при десериализации возвращаемого ответа возникли ошибки
+     * @throws ApiResponseException  возвращается в том случае, если отправлен невалидный токен
+     *                               или возникли ошибки на сервере при обработке запроса
      */
     public static Resume get(String token, String id) throws NoConnectionException, ApiResponseException, JSONException {
         JSONObject jsonObject = new JSONObject(HTTP.GetRequest(localhost() + USER_PATTERN + id, token));
@@ -155,6 +166,8 @@ public class MainServiceApi {
      * @param token String ключ-доступа к API
      * @param id    String id запрашиваемого объекта
      * @throws NoConnectionException если при соединении возникли ошибки
+     * @throws ApiResponseException  возвращается в том случае, если отправлен невалидный токен
+     *                               или возникли ошибки на сервере при обработке запроса
      */
     public static void deleteResume(String token, String id) throws NoConnectionException, ApiResponseException, JSONException {
         HTTP.DeleteRequest(localhost() + ADMIN_RESUMES_PATTERN + id, token);
@@ -165,6 +178,9 @@ public class MainServiceApi {
      *
      * @param token String ключ-доступа к API
      * @throws NoConnectionException если при соединении возникли ошибки
+     * @throws JSONException         если при десериализации возвращаемого ответа возникли ошибки
+     * @throws ApiResponseException  возвращается в том случае, если отправлен невалидный токен
+     *                               или возникли ошибки на сервере при обработке запроса
      */
     public static void deleteAllResumes(String token) throws NoConnectionException, ApiResponseException, JSONException {
         HTTP.DeleteRequest(localhost() + ADMIN_RESUMES_PATTERN, token);
@@ -178,27 +194,72 @@ public class MainServiceApi {
      * @param newStatus String новый статус
      * @throws NoConnectionException если при соединении возникли ошибки
      * @throws JSONException         если при десериализации возвращаемого ответа возникли ошибки
+     * @throws ApiResponseException  возвращается в том случае, если отправлен невалидный токен
+     *                               или возникли ошибки на сервере при обработке запроса
      */
     public static void updateResume(String token, String id, String newStatus) throws NoConnectionException, ApiResponseException, JSONException {
         HTTP.PutRequest(localhost() + USER_PATTERN + id + "?newStatus=" + newStatus, null, token);
     }
 
+    /**
+     * Метод отправляет запрос на добавление нового пользователя
+     *
+     * @param token    String, токен-ключ для доступа к API
+     * @param userJson объект типа User, преобразованный в json
+     * @throws NoConnectionException если при соединении возникли ошибки
+     * @throws IOException           если при соединении или чтении файла возникли ошибки
+     * @throws ApiResponseException  возвращается в том случае, если отправлен невалидный токен
+     *                               или возникли ошибки на сервере при обработке запроса
+     * @throws JSONException         если при десериализации возвращаемого ответа возникли ошибки
+     */
     public static void addUser(String token, JSONObject userJson) throws NoConnectionException, IOException, ApiResponseException, JSONException {
         JSONArray jsonArray = new JSONArray();
         jsonArray.put(userJson);
         HTTP.Post(localhost() + ADMIN_USERS_PATTERN, jsonArray, token);
     }
 
+    /**
+     * Метод отправляет запрос на обновление пользователя
+     *
+     * @param token String, токен-ключ для доступа к API
+     * @param id    идентификатор пользователя
+     * @param user  обновленный объект типа User
+     * @throws NoConnectionException если при соединении возникли ошибки
+     * @throws ApiResponseException  возвращается в том случае, если отправлен невалидный токен
+     *                               или возникли ошибки на сервере при обработке запроса
+     * @throws JSONException         если при десериализации возвращаемого ответа возникли ошибки
+     */
     public static void updateUser(String token, Long id, User user) throws NoConnectionException, ApiResponseException, JSONException {
         JSONObject jsonObject = user.toJson();
 
         HTTP.PutRequest(localhost() + ADMIN_USERS_PATTERN + id, jsonObject, token);
     }
 
+    /**
+     * Метод отправляет запрос на удаление пользователя
+     *
+     * @param token String, токен-ключ для доступа к API
+     * @param id    идентификатор пользователя
+     * @throws NoConnectionException если при соединении возникли ошибки
+     * @throws ApiResponseException  возвращается в том случае, если отправлен невалидный токен
+     *                               или возникли ошибки на сервере при обработке запроса
+     * @throws JSONException         если при десериализации возвращаемого ответа возникли ошибки
+     */
     public static void deleteUser(String token, Long id) throws NoConnectionException, ApiResponseException, JSONException {
         HTTP.DeleteRequest(localhost() + ADMIN_USERS_PATTERN + id, token);
     }
 
+    /**
+     * Метод отправляет запрос на получение списка пользователей
+     *
+     * @param token String, токен-ключ для доступа к API
+     * @return List<User>
+     * @throws NoConnectionException если при соединении возникли ошибки
+     * @throws JSONException         если при десериализации возвращаемого ответа возникли ошибки
+     * @throws ApiResponseException  возвращается в том случае, если отправлен невалидный токен
+     *                               или возникли ошибки на сервере при обработке запроса
+     * @throws IOException           если при соединении или чтении файла возникли ошибки
+     */
     public static List<User> getAllUsers(String token) throws NoConnectionException, JSONException, ApiResponseException, IOException {
         List<User> users = new ArrayList<>();
         String url = localhost() + ADMIN_USERS_PATTERN;

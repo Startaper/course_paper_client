@@ -33,6 +33,7 @@ public class Resume {
     private String searchField;
     private String urlDownloadPdf;
     private String urlDownloadRtf;
+    private String specializations;
     private String driverLicenseTypes;
     private int age;
     private int salary;
@@ -52,7 +53,6 @@ public class Resume {
     private List<Education> educations;
     private List<Experience> experience;
     private List<Recommendation> recommendations;
-    private List<Specialization> specializations;
 
     public Resume() {
     }
@@ -96,7 +96,7 @@ public class Resume {
         this.educations = MainUtil.convertJsonArrayToEducationList(jsonObject.optJSONArray("educations"));
         this.experience = MainUtil.convertJsonArrayToExperienceList(jsonObject.optJSONArray("experience"));
         this.recommendations = MainUtil.convertJsonArrayToRecommendationList(jsonObject.optJSONArray("recommendations"));
-        this.specializations = MainUtil.convertJsonArrayToSpecializationList(jsonObject.optJSONArray("specializations"));
+        this.specializations = jsonObject.optString("specializations");
         this.searchField = String.format("%s %s %s %s",
                 this.getLastName(), this.getFirstName(), this.getMiddleName(), this.getTitle()).toLowerCase();
 
@@ -419,14 +419,6 @@ public class Resume {
         this.recommendations = recommendations;
     }
 
-    public List<Specialization> getSpecializations() {
-        return specializations;
-    }
-
-    public void setSpecializations(List<Specialization> specializations) {
-        this.specializations = specializations;
-    }
-
     public String getMainPhone() {
         return mainPhone;
     }
@@ -449,5 +441,13 @@ public class Resume {
 
     public void setSearchField(String searchField) {
         this.searchField = searchField;
+    }
+
+    public String getSpecializations() {
+        return specializations;
+    }
+
+    public void setSpecializations(String specializations) {
+        this.specializations = specializations;
     }
 }
