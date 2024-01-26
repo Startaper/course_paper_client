@@ -10,8 +10,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Вспомогательный класс
@@ -191,4 +190,31 @@ public final class MainUtil {
         return result;
     }
 
+    /**
+     * Метод фильтрует список резюме по следующим полям - фамилия, имя и отчество, а также должности
+     *
+     * @param resumes список резюме
+     * @param text искомое поле
+     * @return List<Resume> отфильтрованный список
+     */
+    public static List<Resume> searchByText(List<Resume> resumes, String text) {
+        Map<String, List<String>> listStrBySearch = new HashMap<>();
+        for (Resume resume : resumes) {
+            listStrBySearch.put(resume.getId(), Arrays.stream(resume.getSearchField().split("[ .,\\-+='/?!`~@#$%^&*()]")).toList());
+        }
+
+        return resumes.stream()
+                .filter(resume -> {
+                    if (text == null || text.isEmpty()) {
+                        return false;
+                    } else {
+                        List<String> strSearchResume = listStrBySearch.get(resume.getId());
+                        for (String s : text.split("[ .,\\-+='/?!`~@#$%^&*()]")) {
+                            return strSearchResume.contains(s);
+                        }
+                    }
+                    return false;
+                })
+                .toList();
+    }
 }

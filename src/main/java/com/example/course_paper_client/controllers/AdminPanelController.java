@@ -32,6 +32,7 @@ public class AdminPanelController {
 
     @FXML
     private URL location;
+
     @FXML
     private MenuItem btn_about_author;
 
@@ -136,11 +137,7 @@ public class AdminPanelController {
     }
 
     private void onClickOpenAboutAuthor(Event event) {
-        try {
-            openAboutAuthorStage();
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
+        HelloApplication.showAlert("Об авторе", Alert.AlertType.INFORMATION, "Работа выполнена студентом группы ЗБ-ПИ21-2 Ошроевым Азаматом Заудиновичем", "");
     }
 
     private void onClickUpdateTable(Event event) {
@@ -149,11 +146,7 @@ public class AdminPanelController {
             table_users.getItems().clear();
             fillTable();
         } catch (NoConnectionException | ApiResponseException e) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Ошибка");
-            alert.setHeaderText("Ошибка при обновлении данных");
-            alert.setContentText(e.getMessage());
-            alert.show();
+            HelloApplication.showAlert("Ошибка", Alert.AlertType.INFORMATION, "Ошибка при обновлении данных", e.getMessage());
         } catch (JSONException | IOException e) {
             System.out.println(e.getMessage());
         }
@@ -167,18 +160,6 @@ public class AdminPanelController {
                 StageStyle.DECORATED,
                 Modality.APPLICATION_MODAL,
                 false);
-        data.getOpeningStage().showAndWait();
-    }
-
-    private void openAboutAuthorStage() throws IOException {
-        HelloApplication.openNewStage(
-                "about-author.fxml",
-                "Об авторе",
-                false,
-                StageStyle.DECORATED,
-                Modality.APPLICATION_MODAL,
-                false);
-        data.getOpeningStage().showAndWait();
     }
 
     private void openUserItem(User user) throws IOException {
@@ -190,7 +171,6 @@ public class AdminPanelController {
                 StageStyle.UNDECORATED,
                 Modality.APPLICATION_MODAL,
                 false);
-        data.getOpeningStage().showAndWait();
     }
 
     private void changeScene(String fxmlFileName) throws IOException {

@@ -4,7 +4,6 @@ import com.example.course_paper_client.HelloApplication;
 import com.example.course_paper_client.exceptions.ApiResponseException;
 import com.example.course_paper_client.exceptions.NoConnectionException;
 import com.example.course_paper_client.models.User;
-import com.example.course_paper_client.models.WarningModel;
 import com.example.course_paper_client.models.enums.UserStatus;
 import com.example.course_paper_client.services.MainServiceApi;
 import com.example.course_paper_client.utils.DataSingleton;
@@ -12,12 +11,9 @@ import javafx.collections.FXCollections;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import org.json.JSONException;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.ResourceBundle;
@@ -80,11 +76,7 @@ public class UserItemController {
                         data.getSelectedUser());
                 onClickClose(event);
             } catch (NoConnectionException | ApiResponseException e) {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Ошибка");
-                alert.setHeaderText("Ошибка при попытке обновления пользователя");
-                alert.setContentText(e.getMessage());
-                alert.show();
+                HelloApplication.showAlert("Ошибка", Alert.AlertType.INFORMATION, "Ошибка при попытке обновления пользователя", e.getMessage());
             } catch (JSONException e) {
                 System.out.println(e.getMessage());
             }
@@ -93,19 +85,16 @@ public class UserItemController {
 
     private void onClickDeleted(Event event) {
         try {
-            openWarningStage("warning-icon.png", "Удалить пользователя?", "Удалить");
+            ButtonType result =
+                    HelloApplication.showWarningAlert("Удаление", Alert.AlertType.WARNING, "Удалить пользователя?", "");
 
-            if (data.getWarningModel().isResult()) {
+            if (result == ButtonType.OK) {
                 MainServiceApi.deleteUser(data.getToken(), data.getSelectedUser().getId());
                 onClickClose(event);
             }
         } catch (NoConnectionException | ApiResponseException e) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Ошибка");
-            alert.setHeaderText("Ошибка при удалении пользователя");
-            alert.setContentText(e.getMessage());
-            alert.show();
-        } catch (IOException | JSONException e) {
+            HelloApplication.showAlert("Ошибка", Alert.AlertType.INFORMATION, "Ошибка при удалении пользователя", e.getMessage());
+        } catch (JSONException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -128,20 +117,6 @@ public class UserItemController {
                 chbox_is_admin.setSelected(true);
             }
         }
-    }
-
-    private void openWarningStage(String img, String message, String txtBtnConfirm) throws IOException {
-        WarningModel warningModel = new WarningModel(txtBtnConfirm, message, img);
-        data.setWarningModel(warningModel);
-
-        HelloApplication.openNewStage(
-                "warning-view.fxml",
-                "Удаление",
-                false,
-                StageStyle.DECORATED,
-                Modality.APPLICATION_MODAL,
-                true);
-        data.getWarningStage().showAndWait();
     }
 
     private boolean checkUserByUpdate() {

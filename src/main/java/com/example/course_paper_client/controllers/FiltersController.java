@@ -1,5 +1,6 @@
 package com.example.course_paper_client.controllers;
 
+import com.example.course_paper_client.HelloApplication;
 import com.example.course_paper_client.exceptions.ApiResponseException;
 import com.example.course_paper_client.models.Resume;
 import com.example.course_paper_client.models.enums.*;
@@ -65,9 +66,6 @@ public class FiltersController {
     @FXML
     private VBox main_vbox;
 
-    @FXML
-    private TextField txtf_skill_set;
-
     DataSingleton dataSingleton = DataSingleton.getInstance();
 
     @FXML
@@ -110,10 +108,6 @@ public class FiltersController {
                 filters.put("areaName", chbox_area.getValue());
                 status = true;
             }
-            if (txtf_skill_set.getText() != null && !txtf_skill_set.getText().isEmpty()) {
-                filters.put("skillSet", txtf_skill_set.getText());
-                status = true;
-            }
             if (spinner_age_start.getValue() != null && spinner_age_start.getValue() != 0) {
                 filters.put("ageStart", String.valueOf(spinner_age_start.getValue()));
                 status = true;
@@ -132,11 +126,7 @@ public class FiltersController {
             }
         } catch (ApiResponseException e) {
             System.out.println(e.getMessage());
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Ошибка");
-            alert.setHeaderText("Ошибка при обновлении данных.");
-            alert.setContentText(e.getMessage());
-            alert.show();
+            HelloApplication.showAlert("Ошибка", Alert.AlertType.INFORMATION, "Ошибка при обновлении данных.", e.getMessage());
         }
 
         if (status) {
@@ -206,7 +196,6 @@ public class FiltersController {
                 spinner_salary_end.getValueFactory().setValue(Integer.parseInt(filtersState.get("salaryEnd")));
             }
             chbox_area.setValue(filtersState.get("areaName"));
-            txtf_skill_set.setText(filtersState.get("skillSet"));
         }
     }
 
@@ -215,7 +204,6 @@ public class FiltersController {
         chbox_gender.setValue("");
         chbox_bstrip.setValue("");
         chbox_status.setValue("");
-        txtf_skill_set.setText("");
         chbox_travel_time.setValue("");
         chbox_education_level.setValue("");
         spinner_age_end.getValueFactory().setValue(0);

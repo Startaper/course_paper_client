@@ -1,0 +1,516 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.course_paper_client.controllers.ResumeController">
+   <children>
+      <VBox alignment="CENTER">
+         <children>
+            <AnchorPane VBox.vgrow="ALWAYS">
+               <children>
+                  <HBox alignment="CENTER" spacing="10.0">
+                     <children>
+                        <ImageView fx:id="img_profile_photo" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
+                           <HBox.margin>
+                              <Insets left="10.0" />
+                           </HBox.margin>
+                        </ImageView>
+                        <AnchorPane HBox.hgrow="ALWAYS">
+                           <children>
+                              <VBox alignment="CENTER" prefWidth="500.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <HBox alignment="CENTER_LEFT" VBox.vgrow="ALWAYS">
+                                       <children>
+                                          <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
+                                             <children>
+                                                <Text fx:id="txt_resume_title" strokeType="OUTSIDE" strokeWidth="0.0">
+                                                   <font>
+                                                      <Font name="Arial Bold" size="18.0" />
+                                                   </font>
+                                                </Text>
+                                             </children>
+                                          </HBox>
+                                          <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
+                                             <children>
+                                                <Text fx:id="txt_salary" strokeType="OUTSIDE" strokeWidth="0.0" text="руб." textAlignment="RIGHT">
+                                                   <font>
+                                                      <Font name="Arial Bold" size="18.0" />
+                                                   </font>
+                                                </Text>
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" VBox.vgrow="ALWAYS">
+                                       <children>
+                                          <Label fx:id="txt_fio_applicant">
+                                             <font>
+                                                <Font name="Arial" size="14.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" VBox.vgrow="ALWAYS">
+                                       <children>
+                                          <Text fx:id="txt_gender_age_birth_date" strokeType="OUTSIDE" strokeWidth="0.0">
+                                             <font>
+                                                <Font name="Arial" size="12.0" />
+                                             </font>
+                                          </Text>
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" VBox.vgrow="ALWAYS">
+                                       <children>
+                                          <Text fx:id="txt_phone_comment" strokeType="OUTSIDE" strokeWidth="0.0">
+                                             <font>
+                                                <Font name="Arial" size="12.0" />
+                                             </font>
+                                          </Text>
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" VBox.vgrow="ALWAYS">
+                                       <children>
+                                          <Text fx:id="txt_email" strokeType="OUTSIDE" strokeWidth="0.0">
+                                             <font>
+                                                <Font name="Arial" size="12.0" />
+                                             </font>
+                                          </Text>
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" VBox.vgrow="ALWAYS">
+                                       <children>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Проживает:">
+                                             <font>
+                                                <Font name="Arial" size="12.0" />
+                                             </font>
+                                          </Text>
+                                          <Text fx:id="txt_area_metro" strokeType="OUTSIDE" strokeWidth="0.0">
+                                             <font>
+                                                <Font name="Arial" size="12.0" />
+                                             </font>
+                                             <HBox.margin>
+                                                <Insets left="10.0" />
+                                             </HBox.margin>
+                                          </Text>
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" VBox.vgrow="ALWAYS">
+                                       <children>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Гражданство:">
+                                             <font>
+                                                <Font name="Arial" size="12.0" />
+                                             </font>
+                                          </Text>
+                                          <Text fx:id="txt_citizenship" strokeType="OUTSIDE" strokeWidth="0.0">
+                                             <font>
+                                                <Font name="Arial" size="12.0" />
+                                             </font>
+                                             <HBox.margin>
+                                                <Insets left="10.0" />
+                                             </HBox.margin>
+                                          </Text>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text=", есть разрешение на работу:">
+                                             <font>
+                                                <Font name="Arial" size="12.0" />
+                                             </font>
+                                             <HBox.margin>
+                                                <Insets />
+                                             </HBox.margin>
+                                          </Text>
+                                          <Text fx:id="txt_work_tickets" strokeType="OUTSIDE" strokeWidth="0.0">
+                                             <font>
+                                                <Font name="Arial" size="12.0" />
+                                             </font>
+                                             <HBox.margin>
+                                                <Insets left="10.0" />
+                                             </HBox.margin>
+                                          </Text>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </children>
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </AnchorPane>
+                     </children>
+                  </HBox>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="5.0" top="5.0" />
+               </VBox.margin>
+            </AnchorPane>
+            <AnchorPane style="-fx-border-width: 1 0 0 0; -fx-border-color: black;" VBox.vgrow="ALWAYS">
+               <children>
+                  <VBox>
+                     <children>
+                        <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+                          <tabs>
+                            <Tab text="Опыт работы">
+                                 <content>
+                                    <TableView fx:id="table_experience" prefHeight="200.0" prefWidth="200.0">
+                                      <columns>
+                                          <TableColumn fx:id="table_experience_id" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="39.20001258850098" text="Id" />
+                                        <TableColumn fx:id="table_experience_company" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="106.4000244140625" text="Компания" />
+                                        <TableColumn fx:id="table_experience_position" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="93.5999755859375" text="Должность" />
+                                          <TableColumn fx:id="table_experience_area" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="68.0" text="Город" />
+                                          <TableColumn fx:id="table_experience_industries" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="146.4000244140625" text="Отрасли компании" />
+                                          <TableColumn fx:id="table_experience_description" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="183.99993896484375" text="Обязанности" />
+                                          <TableColumn fx:id="table_experience_start" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="112.800048828125" text="Начало работы" />
+                                          <TableColumn fx:id="table_experience_end" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="147.199951171875" text="Окончание работы" />
+                                      </columns>
+                                    </TableView>
+                                 </content>
+                              </Tab>
+                            <Tab text="Образование">
+                                 <content>
+                                    <VBox spacing="5.0">
+                                       <children>
+                                          <HBox spacing="10.0">
+                                             <children>
+                                                <Label text="Уровень образования:">
+                                                   <font>
+                                                      <Font name="Arial Bold" size="12.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label fx:id="txt_education_level">
+                                                   <font>
+                                                      <Font name="Arial Bold" size="12.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                          </HBox>
+                                          <TableView fx:id="table_educations" prefHeight="200.0" prefWidth="200.0">
+                                            <columns>
+                                              <TableColumn fx:id="table_educations_id" prefWidth="56.00000038146973" text="Id" />
+                                              <TableColumn fx:id="table_educations_type" prefWidth="155.20001220703125" text="Вид" />
+                                                <TableColumn fx:id="table_educations_name" prefWidth="124.79999542236328" text="Наименование уч. заведения / Курса" />
+                                                <TableColumn fx:id="table_educations_organisation" prefWidth="93.5999755859375" text="Факультет / Организация" />
+                                                <TableColumn fx:id="table_educations_result" prefWidth="68.79998779296875" text="Специальность / специализация" />
+                                                <TableColumn fx:id="table_educations_year" prefWidth="93.60000610351562" text="Год окончания / сдачи" />
+                                            </columns>
+                                          </TableView>
+                                       </children>
+                                       <padding>
+                                          <Insets top="5.0" />
+                                       </padding>
+                                    </VBox>
+                                 </content></Tab>
+                              <Tab text="Рекомендации">
+                                 <content>
+                                    <TableView fx:id="table_recommendations" prefHeight="200.0" prefWidth="200.0">
+                                      <columns>
+                                        <TableColumn fx:id="table_recommendations_organisation" prefWidth="75.0" text="Организация" />
+                                          <TableColumn fx:id="table_recommendations_name" prefWidth="75.0" text="Имя выдавшего рекомендацию" />
+                                          <TableColumn fx:id="table_recommendations_contact" prefWidth="75.0" text="Контакт" />
+                                        <TableColumn fx:id="table_recommendations_position" prefWidth="75.0" text="Должность" />
+                                      </columns>
+                                    </TableView>
+                                 </content></Tab>
+                          </tabs>
+                        </TabPane>
+                        <HBox>
+                           <children>
+                              <AnchorPane prefWidth="315.0">
+                                 <children>
+                                    <VBox prefWidth="315.0" spacing="10.0">
+                                       <padding>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </padding>
+                                       <children>
+                                          <HBox prefWidth="200.0">
+                                             <children>
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Специализации:">
+                                                   <font>
+                                                      <Font name="Arial" size="12.0" />
+                                                   </font>
+                                                   <HBox.margin>
+                                                      <Insets right="20.0" />
+                                                   </HBox.margin>
+                                                </Text>
+                                                <TextArea fx:id="txt_specializations" editable="false" prefRowCount="2" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                                                   <HBox.margin>
+                                                      <Insets />
+                                                   </HBox.margin>
+                                                </TextArea>
+                                             </children>
+                                             <VBox.margin>
+                                                <Insets />
+                                             </VBox.margin>
+                                          </HBox>
+                                          <HBox prefWidth="200.0">
+                                             <children>
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Ключевые навыки:">
+                                                   <font>
+                                                      <Font name="Arial" size="12.0" />
+                                                   </font>
+                                                   <HBox.margin>
+                                                      <Insets right="20.0" />
+                                                   </HBox.margin>
+                                                </Text>
+                                                <TextArea fx:id="txt_skill_set" editable="false" prefRowCount="2" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                                                   <HBox.margin>
+                                                      <Insets />
+                                                   </HBox.margin>
+                                                </TextArea>
+                                             </children>
+                                             <VBox.margin>
+                                                <Insets />
+                                             </VBox.margin>
+                                          </HBox>
+                                          <HBox prefWidth="200.0">
+                                             <children>
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Знание языков:">
+                                                   <font>
+                                                      <Font name="Arial" size="12.0" />
+                                                   </font>
+                                                   <HBox.margin>
+                                                      <Insets right="20.0" />
+                                                   </HBox.margin>
+                                                </Text>
+                                                <TextArea fx:id="txt_languages" editable="false" prefRowCount="2" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                                                   <HBox.margin>
+                                                      <Insets />
+                                                   </HBox.margin>
+                                                </TextArea>
+                                             </children>
+                                             <VBox.margin>
+                                                <Insets />
+                                             </VBox.margin>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane prefWidth="315.0">
+                                 <children>
+                                    <VBox prefWidth="315.0" spacing="10.0">
+                                       <children>
+                                          <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0">
+                                             <children>
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Статус:">
+                                                   <HBox.margin>
+                                                      <Insets right="10.0" />
+                                                   </HBox.margin>
+                                                   <font>
+                                                      <Font name="Arial" size="12.0" />
+                                                   </font>
+                                                </Text>
+                                                <ChoiceBox fx:id="cbox_status" maxWidth="1.7976931348623157E308" prefWidth="150.0">
+                                                   <cursor>
+                                                      <Cursor fx:constant="HAND" />
+                                                   </cursor>
+                                                </ChoiceBox>
+                                             </children>
+                                             <VBox.margin>
+                                                <Insets />
+                                             </VBox.margin>
+                                          </HBox>
+                                          <HBox prefWidth="200.0">
+                                             <children>
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Занятость:">
+                                                   <font>
+                                                      <Font name="Arial" size="12.0" />
+                                                   </font>
+                                                   <HBox.margin>
+                                                      <Insets right="20.0" />
+                                                   </HBox.margin>
+                                                </Text>
+                                                <TextArea fx:id="txt_employments" editable="false" prefRowCount="1" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                                                   <HBox.margin>
+                                                      <Insets />
+                                                   </HBox.margin>
+                                                </TextArea>
+                                             </children>
+                                             <VBox.margin>
+                                                <Insets />
+                                             </VBox.margin>
+                                          </HBox>
+                                          <HBox prefWidth="200.0">
+                                             <children>
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="График работы:">
+                                                   <font>
+                                                      <Font name="Arial" size="12.0" />
+                                                   </font>
+                                                   <HBox.margin>
+                                                      <Insets right="20.0" />
+                                                   </HBox.margin>
+                                                </Text>
+                                                <TextArea fx:id="txt_schedules" editable="false" prefRowCount="1" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                                                   <HBox.margin>
+                                                      <Insets />
+                                                   </HBox.margin>
+                                                </TextArea>
+                                             </children>
+                                             <VBox.margin>
+                                                <Insets />
+                                             </VBox.margin>
+                                          </HBox>
+                                          <HBox alignment="CENTER_LEFT" prefWidth="200.0">
+                                             <children>
+                                                <HBox alignment="CENTER_LEFT" prefWidth="200.0">
+                                                   <children>
+                                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Желательное время в пути до работы:" textAlignment="RIGHT" wrappingWidth="130.0">
+                                                         <font>
+                                                            <Font name="Arial" size="12.0" />
+                                                         </font>
+                                                         <HBox.margin>
+                                                            <Insets right="20.0" />
+                                                         </HBox.margin>
+                                                      </Text>
+                                                   </children>
+                                                </HBox>
+                                                <HBox alignment="CENTER_RIGHT" prefWidth="200.0">
+                                                   <children>
+                                                      <Text fx:id="txt_travel_time" strokeType="OUTSIDE" strokeWidth="0.0">
+                                                         <font>
+                                                            <Font name="Arial" size="12.0" />
+                                                         </font>
+                                                      </Text>
+                                                   </children>
+                                                </HBox>
+                                             </children>
+                                             <VBox.margin>
+                                                <Insets />
+                                             </VBox.margin>
+                                          </HBox>
+                                          <HBox alignment="CENTER_LEFT" prefWidth="200.0">
+                                             <children>
+                                                <HBox alignment="CENTER_LEFT" prefWidth="200.0">
+                                                   <children>
+                                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Опыт вождения" wrappingWidth="130.0">
+                                                         <font>
+                                                            <Font name="Arial" size="12.0" />
+                                                         </font>
+                                                         <HBox.margin>
+                                                            <Insets right="20.0" />
+                                                         </HBox.margin>
+                                                      </Text>
+                                                   </children>
+                                                </HBox>
+                                                <HBox alignment="CENTER_RIGHT" prefWidth="200.0">
+                                                   <children>
+                                                      <Text fx:id="txt_driver_license" strokeType="OUTSIDE" strokeWidth="0.0">
+                                                         <font>
+                                                            <Font name="Arial" size="12.0" />
+                                                         </font>
+                                                      </Text>
+                                                   </children>
+                                                </HBox>
+                                             </children>
+                                             <VBox.margin>
+                                                <Insets />
+                                             </VBox.margin>
+                                          </HBox>
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </padding>
+                                    </VBox>
+                                 </children>
+                              </AnchorPane>
+                           </children>
+                        </HBox>
+                        <HBox VBox.vgrow="ALWAYS">
+                           <children>
+                              <AnchorPane prefWidth="315.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <VBox>
+                                       <children>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="О себе" VBox.vgrow="ALWAYS">
+                                             <font>
+                                                <Font name="Arial" size="14.0" />
+                                             </font>
+                                             <VBox.margin>
+                                                <Insets bottom="5.0" />
+                                             </VBox.margin>
+                                          </Text>
+                                          <TextArea fx:id="txt_skills" editable="false" prefColumnCount="0" prefRowCount="8" prefWidth="620.0" VBox.vgrow="ALWAYS" />
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </padding>
+                                    </VBox>
+                                 </children>
+                              </AnchorPane>
+                           </children>
+                        </HBox>
+                        <VBox prefHeight="35.0" prefWidth="315.0">
+                           <children>
+                              <HBox fx:id="hbox_commands" alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <MenuButton fx:id="btn_menu_download" mnemonicParsing="false" text="Скачать">
+                                      <items>
+                                        <MenuItem fx:id="btn_download_pdf" mnemonicParsing="false" text="PDF" />
+                                        <MenuItem fx:id="btn_download_rtf" mnemonicParsing="false" text="RTF" />
+                                      </items>
+                                       <HBox.margin>
+                                          <Insets right="10.0" />
+                                       </HBox.margin>
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
+                                    </MenuButton>
+                                    <Button fx:id="btn_delete" mnemonicParsing="false" style="-fx-background-color: red;" text="Удалить">
+                                       <HBox.margin>
+                                          <Insets right="10.0" />
+                                       </HBox.margin>
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
+                                    </Button>
+                                    <Button fx:id="btn_save" mnemonicParsing="false" style="-fx-background-color: green;" text="Сохронить">
+                                       <HBox.margin>
+                                          <Insets right="10.0" />
+                                       </HBox.margin>
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
+                                    </Button>
+                                    <Button fx:id="btn_close" mnemonicParsing="false" text="Закрыть">
+                                       <HBox.margin>
+                                          <Insets right="5.0" />
+                                       </HBox.margin>
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
+                                    </Button>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </children>
+                     <padding>
+                        <Insets left="10.0" right="10.0" top="5.0" />
+                     </padding>
+                  </VBox>
+               </children>
+            </AnchorPane>
+         </children>
+      </VBox>
+   </children>
+   <padding>
+      <Insets top="5.0" />
+   </padding>
+</AnchorPane>

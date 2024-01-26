@@ -18,9 +18,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import org.json.JSONException;
 
 import java.io.BufferedInputStream;
@@ -221,13 +219,10 @@ public class ResumeController {
                         dataSingleton.getSelectedResume().getId(),
                         ResumeStatus.getStatusByName(cbox_status.getValue())
                 );
+                HelloApplication.showAlert("Обновление резюме", Alert.AlertType.INFORMATION, "Резюме успещно обновлено", "");
                 onClickClose(event);
             } catch (NoConnectionException | ApiResponseException e) {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Ошибка");
-                alert.setHeaderText("Ошибка при попытке обновить резюме");
-                alert.setContentText(e.getMessage());
-                alert.show();
+                HelloApplication.showAlert("Ошибка", Alert.AlertType.INFORMATION, "Ошибка при попытке обновить резюме", e.getMessage());
             } catch (JSONException e) {
                 System.out.println(e.getMessage());
             }
@@ -236,19 +231,17 @@ public class ResumeController {
 
     private void onClickDeleted(Event event) {
         try {
-            openWarningStage("warning-icon.png", "Удалить это резюме?", "Удалить");
+            ButtonType result =
+                    HelloApplication.showWarningAlert("Удаление", Alert.AlertType.WARNING, "Удалить резюме?", "");
 
-            if (dataSingleton.getWarningModel().isResult()) {
+            if (result == ButtonType.OK) {
                 MainServiceApi.deleteResume(dataSingleton.getToken(), dataSingleton.getSelectedResume().getId());
+                HelloApplication.showAlert("Удаление", Alert.AlertType.INFORMATION, "Резюме успешно удалено", "");
                 onClickClose(event);
             }
         } catch (NoConnectionException | ApiResponseException e) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Ошибка");
-            alert.setHeaderText("Ошибка при удалении данных");
-            alert.setContentText(e.getMessage());
-            alert.show();
-        } catch (IOException | JSONException e) {
+            HelloApplication.showAlert("Ошибка", Alert.AlertType.INFORMATION, "Ошибка при удалении данных", e.getMessage());
+        } catch (JSONException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -263,11 +256,7 @@ public class ResumeController {
         try {
             HttpURLConnection httpURLConnection = (HttpURLConnection) new URL(dataSingleton.getSelectedResume().getUrlDownloadPdf()).openConnection();
             if (httpURLConnection.getResponseCode() == 403) {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Ошибка");
-                alert.setHeaderText("Ошибка при скачивании файла.");
-                alert.setContentText("У вас недостаточно прав для этого действия.");
-                alert.show();
+                HelloApplication.showAlert("Ошибка", Alert.AlertType.INFORMATION, "Ошибка при скачивании файла.", "У вас недостаточно прав для этого действия.");
             }
             try (BufferedInputStream bufferedInputStream = new BufferedInputStream(httpURLConnection.getInputStream());) {
                 try (FileOutputStream fileOutputStream = new FileOutputStream(txt_fio_applicant.getText() + " " + txt_resume_title.getText())) {
@@ -275,9 +264,8 @@ public class ResumeController {
                     while ((data = bufferedInputStream.read()) != -1) {
                         fileOutputStream.write(data);
                     }
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setContentText("Файл загружен");
-                    alert.show();
+                    HelloApplication.showAlert("Файл загружен", Alert.AlertType.INFORMATION, "Файл загружен", "");
+
                 }
             }
         } catch (IOException e) {
@@ -289,11 +277,7 @@ public class ResumeController {
         try {
             HttpURLConnection httpURLConnection = (HttpURLConnection) new URL(dataSingleton.getSelectedResume().getUrlDownloadRtf()).openConnection();
             if (httpURLConnection.getResponseCode() == 403) {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Ошибка");
-                alert.setHeaderText("Ошибка при скачивании файла.");
-                alert.setContentText("У вас недостаточно прав для этого действия.");
-                alert.show();
+                HelloApplication.showAlert("Ошибка", Alert.AlertType.INFORMATION, "Ошибка при скачивании файла.", "У вас недостаточно прав для этого действия.");
             }
             try (BufferedInputStream bufferedInputStream = new BufferedInputStream(httpURLConnection.getInputStream());) {
                 try (FileOutputStream fileOutputStream = new FileOutputStream(txt_fio_applicant.getText() + " " + txt_resume_title.getText())) {
@@ -301,9 +285,7 @@ public class ResumeController {
                     while ((data = bufferedInputStream.read()) != -1) {
                         fileOutputStream.write(data);
                     }
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setContentText("Файл загружен");
-                    alert.show();
+                    HelloApplication.showAlert("Файл загружен", Alert.AlertType.INFORMATION, "Файл загружен", "");
                 }
             }
         } catch (IOException e) {
@@ -382,20 +364,6 @@ public class ResumeController {
         table_recommendations_organisation.setCellValueFactory(new PropertyValueFactory<Recommendation, String>("organization"));
         table_recommendations_position.setCellValueFactory(new PropertyValueFactory<Recommendation, String>("position"));
         table_recommendations_contact.setCellValueFactory(new PropertyValueFactory<Recommendation, String>("contact"));
-    }
-
-    private void openWarningStage(String img, String message, String txtBtnConfirm) throws IOException {
-        WarningModel warningModel = new WarningModel(txtBtnConfirm, message, img);
-        dataSingleton.setWarningModel(warningModel);
-
-        HelloApplication.openNewStage(
-                "warning-view.fxml",
-                "Удаление",
-                false,
-                StageStyle.DECORATED,
-                Modality.APPLICATION_MODAL,
-                true);
-        dataSingleton.getWarningStage().showAndWait();
     }
 
     private void loadImg(String photoUrl) {

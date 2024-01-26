@@ -4,12 +4,12 @@ import com.example.course_paper_client.HelloApplication;
 import com.example.course_paper_client.exceptions.ApiResponseException;
 import com.example.course_paper_client.exceptions.NoConnectionException;
 import com.example.course_paper_client.models.Resume;
-import com.example.course_paper_client.models.WarningModel;
 import com.example.course_paper_client.models.enums.EducationLevel;
 import com.example.course_paper_client.models.enums.Gender;
 import com.example.course_paper_client.models.enums.ResumeStatus;
 import com.example.course_paper_client.services.MainServiceApi;
 import com.example.course_paper_client.utils.DataSingleton;
+import com.example.course_paper_client.utils.MainUtil;
 import javafx.collections.FXCollections;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -142,22 +142,31 @@ public class MainController {
         btn_logout.setOnAction(this::onClickLogout);
         txt_btn_reset_filters.setOnMouseClicked(this::onClickResetFilters);
         btn_users.setOnAction(this::onClickButtonUsers);
+        btn_search.setOnAction(this::onClickSearch);
     }
 
     private void initTableColumns() {
-        table_column_age.setCellValueFactory(new PropertyValueFactory<Resume, Integer>("age"));
-        table_column_area.setCellValueFactory(new PropertyValueFactory<Resume, String>("area"));
-        table_column_education_level.setCellValueFactory(new PropertyValueFactory<Resume, EducationLevel>("educationLevel"));
-        table_column_firstname.setCellValueFactory(new PropertyValueFactory<Resume, String>("firstName"));
-        table_column_gender.setCellValueFactory(new PropertyValueFactory<Resume, Gender>("gender"));
-        table_column_lastname.setCellValueFactory(new PropertyValueFactory<Resume, String>("lastName"));
-        table_column_number.setCellValueFactory(new PropertyValueFactory<Resume, String>("id"));
-        table_column_post.setCellValueFactory(new PropertyValueFactory<Resume, String>("title"));
-        table_column_salary.setCellValueFactory(new PropertyValueFactory<Resume, Integer>("salary"));
-        table_column_status.setCellValueFactory(new PropertyValueFactory<Resume, ResumeStatus>("status"));
-        table_column_rating.setCellValueFactory(new PropertyValueFactory<Resume, Float>("rating"));
-        table_column_email.setCellValueFactory(new PropertyValueFactory<Resume, String>("email"));
-        table_column_phone.setCellValueFactory(new PropertyValueFactory<Resume, String>("mainPhone"));
+        table_column_age.setCellValueFactory(new PropertyValueFactory<>("age"));
+        table_column_area.setCellValueFactory(new PropertyValueFactory<>("area"));
+        table_column_education_level.setCellValueFactory(new PropertyValueFactory<>("educationLevel"));
+        table_column_firstname.setCellValueFactory(new PropertyValueFactory<>("firstName"));
+        table_column_status.setCellValueFactory(new PropertyValueFactory<>("status"));
+        table_column_salary.setCellValueFactory(new PropertyValueFactory<>("salary"));
+        table_column_gender.setCellValueFactory(new PropertyValueFactory<>("gender"));
+        table_column_lastname.setCellValueFactory(new PropertyValueFactory<>("lastName"));
+        table_column_number.setCellValueFactory(new PropertyValueFactory<>("id"));
+        table_column_post.setCellValueFactory(new PropertyValueFactory<>("title"));
+        table_column_rating.setCellValueFactory(new PropertyValueFactory<>("rating"));
+        table_column_email.setCellValueFactory(new PropertyValueFactory<>("email"));
+        table_column_phone.setCellValueFactory(new PropertyValueFactory<>("mainPhone"));
+    }
+
+    private void onClickSearch(Event event) {
+        onClickRefreshTable(event);
+        if (!field_search_text.getText().isBlank()) {
+            dataSingleton.setResumes(MainUtil.searchByText(dataSingleton.getResumes(), field_search_text.getText()));
+            fillTable();
+        }
     }
 
     private void onClickButtonUsers(Event event) {
@@ -165,11 +174,7 @@ public class MainController {
             dataSingleton.setUsers(MainServiceApi.getAllUsers(dataSingleton.getToken()));
             changeScene("admin-panel-view.fxml");
         } catch (NoConnectionException | ApiResponseException e) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Ошибка");
-            alert.setHeaderText("Ошибка при получении списка пользователей");
-            alert.setContentText(e.getMessage());
-            alert.show();
+            HelloApplication.showAlert("Ошибка", Alert.AlertType.INFORMATION, "Ошибка при получении списка пользователей", e.getMessage());
         } catch (JSONException | IOException e) {
             System.out.println(e.getMessage());
         }
@@ -179,13 +184,11 @@ public class MainController {
         FileChooser fileChooser = new FileChooser();
         File file = fileChooser.showOpenDialog(btn_add_from_file.getScene().getWindow());
         try {
-            MainServiceApi.addResumes(file, dataSingleton.getToken());
+            if (file != null) {
+                MainServiceApi.addResumes(file, dataSingleton.getToken());
+            }
         } catch (NoConnectionException | ApiResponseException e) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Ошибка");
-            alert.setHeaderText("Ошибка при добавлении данных");
-            alert.setContentText(e.getMessage());
-            alert.show();
+            HelloApplication.showAlert("Ошибка", Alert.AlertType.INFORMATION, "Ошибка при добавлении данных", e.getMessage());
         } catch (JSONException | IOException e) {
             System.out.println(e.getMessage());
         }
@@ -194,6 +197,7 @@ public class MainController {
 
     private void onClickResetFilters(Event event) {
         dataSingleton.setFilters(null);
+        field_search_text.clear();
         onClickRefreshTable(event);
     }
 
@@ -209,14 +213,10 @@ public class MainController {
     private void onClickRefreshTable(Event event) {
         try {
             dataSingleton.setResumes(MainServiceApi.getAllResumes(dataSingleton.getToken(), dataSingleton.getFilters()));
-            table.getItems().clear();
+//            table.getItems().;
             fillTable();
         } catch (NoConnectionException | ApiResponseException e) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Ошибка");
-            alert.setHeaderText("Ошибка при обновлении данных");
-            alert.setContentText(e.getMessage());
-            alert.show();
+            HelloApplication.showAlert("Ошибка", Alert.AlertType.INFORMATION, "Ошибка при обновлении данных", e.getMessage());
         } catch (JSONException | IOException e) {
             System.out.println(e.getMessage());
         }
@@ -236,11 +236,7 @@ public class MainController {
     }
 
     private void onClickOpenAboutAuthor(Event event) {
-        try {
-            openAboutAuthorStage();
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
+        HelloApplication.showAlert("Об авторе", Alert.AlertType.INFORMATION, "Работа выполнена студентом группы ЗБ-ПИ21-2 Ошроевым Азаматом Заудиновичем", "");
     }
 
     private void onClickOpenFilters(Event event) {
@@ -254,20 +250,16 @@ public class MainController {
 
     private void onClickDeletedAll(Event event) {
         try {
-            openWarningStage("warning-icon.png", "Удалить", "Удалить все резюме?");
-
-            if (dataSingleton.getWarningModel().isResult()) {
+            ButtonType result =
+                    HelloApplication.showWarningAlert("Удаление", Alert.AlertType.WARNING, "Удалить все резюме?", "");
+            if (result == ButtonType.OK) {
                 deleteAllResume();
                 dataSingleton.getResumes().clear();
                 fillTable();
             }
         } catch (NoConnectionException | ApiResponseException e) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Ошибка");
-            alert.setHeaderText("Ошибка при удалении данных");
-            alert.setContentText(e.getMessage());
-            alert.show();
-        } catch (IOException | JSONException e) {
+            HelloApplication.showAlert("Ошибка", Alert.AlertType.INFORMATION, "Ошибка при удалении данных", e.getMessage());
+        } catch (JSONException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -298,7 +290,6 @@ public class MainController {
                 StageStyle.UNDECORATED,
                 Modality.APPLICATION_MODAL,
                 false);
-        dataSingleton.getOpeningStage().showAndWait();
     }
 
     private void openResumeStage(Resume resume) throws IOException {
@@ -310,32 +301,6 @@ public class MainController {
                 StageStyle.UNDECORATED,
                 Modality.APPLICATION_MODAL,
                 false);
-        dataSingleton.getOpeningStage().showAndWait();
-    }
-
-    private void openAboutAuthorStage() throws IOException {
-        HelloApplication.openNewStage(
-                "about-author.fxml",
-                "Об авторе",
-                false,
-                StageStyle.DECORATED,
-                Modality.APPLICATION_MODAL,
-                false);
-        dataSingleton.getOpeningStage().showAndWait();
-    }
-
-    private void openWarningStage(String img, String txtBtnConfirm, String message) throws IOException {
-        WarningModel warningModel = new WarningModel(txtBtnConfirm, message, img);
-        dataSingleton.setWarningModel(warningModel);
-
-        HelloApplication.openNewStage(
-                "warning-view.fxml",
-                "Удаление",
-                false,
-                StageStyle.DECORATED,
-                Modality.APPLICATION_MODAL,
-                true);
-        dataSingleton.getOpeningStage().showAndWait();
     }
 
     private void fillTable() {

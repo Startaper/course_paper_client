@@ -4,6 +4,9 @@ import com.example.course_paper_client.utils.DataSingleton;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -22,6 +25,7 @@ public class HelloApplication extends Application {
         stage.setTitle("HR Assistant");
         stage.setResizable(false);
         stage.setScene(scene);
+        stage.getIcons().add(new Image("hr-icon.png"));
         stage.show();
     }
 
@@ -47,6 +51,22 @@ public class HelloApplication extends Application {
         } else {
             data.setWarningStage(stage);
         }
+        stage.showAndWait();
     }
 
+    public static void showAlert(String title, Alert.AlertType alertType, String headerText, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(headerText);
+        alert.setContentText(message);
+        alert.show();
+    }
+
+    public static ButtonType showWarningAlert(String title, Alert.AlertType alertType, String headerText, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(headerText);
+        alert.setContentText(message);
+        return alert.showAndWait().orElse(ButtonType.CLOSE);
+    }
 }

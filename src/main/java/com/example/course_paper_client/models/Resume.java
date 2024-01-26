@@ -30,6 +30,7 @@ public class Resume {
     private String workTickets;
     private String employments;
     private String citizenship;
+    private String searchField;
     private String urlDownloadPdf;
     private String urlDownloadRtf;
     private String driverLicenseTypes;
@@ -96,6 +97,8 @@ public class Resume {
         this.experience = MainUtil.convertJsonArrayToExperienceList(jsonObject.optJSONArray("experience"));
         this.recommendations = MainUtil.convertJsonArrayToRecommendationList(jsonObject.optJSONArray("recommendations"));
         this.specializations = MainUtil.convertJsonArrayToSpecializationList(jsonObject.optJSONArray("specializations"));
+        this.searchField = String.format("%s %s %s %s",
+                this.getLastName(), this.getFirstName(), this.getMiddleName(), this.getTitle()).toLowerCase();
 
         Contact contact = MainUtil.getContactByContactType(this.getContacts(), ContactType.EMAIL);
         if (contact != null) {
@@ -438,5 +441,13 @@ public class Resume {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getSearchField() {
+        return searchField;
+    }
+
+    public void setSearchField(String searchField) {
+        this.searchField = searchField;
     }
 }
