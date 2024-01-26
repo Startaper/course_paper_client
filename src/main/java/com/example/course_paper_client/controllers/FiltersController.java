@@ -1,6 +1,6 @@
 package com.example.course_paper_client.controllers;
 
-import com.example.course_paper_client.HelloApplication;
+import com.example.course_paper_client.MainApp;
 import com.example.course_paper_client.exceptions.ApiResponseException;
 import com.example.course_paper_client.models.Resume;
 import com.example.course_paper_client.models.enums.*;
@@ -126,7 +126,7 @@ public class FiltersController {
             }
         } catch (ApiResponseException e) {
             System.out.println(e.getMessage());
-            HelloApplication.showAlert("Ошибка", Alert.AlertType.INFORMATION, "Ошибка при обновлении данных.", e.getMessage());
+            MainApp.showAlert("Ошибка", Alert.AlertType.INFORMATION, "Ошибка при обновлении данных.", e.getMessage());
         }
 
         if (status) {

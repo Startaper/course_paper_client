@@ -1,6 +1,6 @@
 package com.example.course_paper_client.controllers;
 
-import com.example.course_paper_client.HelloApplication;
+import com.example.course_paper_client.MainApp;
 import com.example.course_paper_client.exceptions.ApiResponseException;
 import com.example.course_paper_client.exceptions.NoConnectionException;
 import com.example.course_paper_client.models.*;
@@ -219,10 +219,10 @@ public class ResumeController {
                         dataSingleton.getSelectedResume().getId(),
                         ResumeStatus.getStatusByName(cbox_status.getValue())
                 );
-                HelloApplication.showAlert("Обновление резюме", Alert.AlertType.INFORMATION, "Резюме успещно обновлено", "");
+                MainApp.showAlert("Обновление резюме", Alert.AlertType.INFORMATION, "Резюме успещно обновлено", "");
                 onClickClose(event);
             } catch (NoConnectionException | ApiResponseException e) {
-                HelloApplication.showAlert("Ошибка", Alert.AlertType.INFORMATION, "Ошибка при попытке обновить резюме", e.getMessage());
+                MainApp.showAlert("Ошибка", Alert.AlertType.INFORMATION, "Ошибка при попытке обновить резюме", e.getMessage());
             } catch (JSONException e) {
                 System.out.println(e.getMessage());
             }
@@ -232,15 +232,15 @@ public class ResumeController {
     private void onClickDeleted(Event event) {
         try {
             ButtonType result =
-                    HelloApplication.showWarningAlert("Удаление", Alert.AlertType.WARNING, "Удалить резюме?", "");
+                    MainApp.showWarningAlert("Удаление", Alert.AlertType.WARNING, "Удалить резюме?", "");
 
             if (result == ButtonType.OK) {
                 MainServiceApi.deleteResume(dataSingleton.getToken(), dataSingleton.getSelectedResume().getId());
-                HelloApplication.showAlert("Удаление", Alert.AlertType.INFORMATION, "Резюме успешно удалено", "");
+                MainApp.showAlert("Удаление", Alert.AlertType.INFORMATION, "Резюме успешно удалено", "");
                 onClickClose(event);
             }
         } catch (NoConnectionException | ApiResponseException e) {
-            HelloApplication.showAlert("Ошибка", Alert.AlertType.INFORMATION, "Ошибка при удалении данных", e.getMessage());
+            MainApp.showAlert("Ошибка", Alert.AlertType.INFORMATION, "Ошибка при удалении данных", e.getMessage());
         } catch (JSONException e) {
             System.out.println(e.getMessage());
         }
@@ -256,7 +256,7 @@ public class ResumeController {
         try {
             HttpURLConnection httpURLConnection = (HttpURLConnection) new URL(dataSingleton.getSelectedResume().getUrlDownloadPdf()).openConnection();
             if (httpURLConnection.getResponseCode() == 403) {
-                HelloApplication.showAlert("Ошибка", Alert.AlertType.INFORMATION, "Ошибка при скачивании файла.", "У вас недостаточно прав для этого действия.");
+                MainApp.showAlert("Ошибка", Alert.AlertType.INFORMATION, "Ошибка при скачивании файла.", "У вас недостаточно прав для этого действия.");
             }
             try (BufferedInputStream bufferedInputStream = new BufferedInputStream(httpURLConnection.getInputStream());) {
                 try (FileOutputStream fileOutputStream = new FileOutputStream(txt_fio_applicant.getText() + " " + txt_resume_title.getText())) {
@@ -264,7 +264,7 @@ public class ResumeController {
                     while ((data = bufferedInputStream.read()) != -1) {
                         fileOutputStream.write(data);
                     }
-                    HelloApplication.showAlert("Файл загружен", Alert.AlertType.INFORMATION, "Файл загружен", "");
+                    MainApp.showAlert("Файл загружен", Alert.AlertType.INFORMATION, "Файл загружен", "");
 
                 }
             }
@@ -277,7 +277,7 @@ public class ResumeController {
         try {
             HttpURLConnection httpURLConnection = (HttpURLConnection) new URL(dataSingleton.getSelectedResume().getUrlDownloadRtf()).openConnection();
             if (httpURLConnection.getResponseCode() == 403) {
-                HelloApplication.showAlert("Ошибка", Alert.AlertType.INFORMATION, "Ошибка при скачивании файла.", "У вас недостаточно прав для этого действия.");
+                MainApp.showAlert("Ошибка", Alert.AlertType.INFORMATION, "Ошибка при скачивании файла.", "У вас недостаточно прав для этого действия.");
             }
             try (BufferedInputStream bufferedInputStream = new BufferedInputStream(httpURLConnection.getInputStream());) {
                 try (FileOutputStream fileOutputStream = new FileOutputStream(txt_fio_applicant.getText() + " " + txt_resume_title.getText())) {
@@ -285,7 +285,7 @@ public class ResumeController {
                     while ((data = bufferedInputStream.read()) != -1) {
                         fileOutputStream.write(data);
                     }
-                    HelloApplication.showAlert("Файл загружен", Alert.AlertType.INFORMATION, "Файл загружен", "");
+                    MainApp.showAlert("Файл загружен", Alert.AlertType.INFORMATION, "Файл загружен", "");
                 }
             }
         } catch (IOException e) {

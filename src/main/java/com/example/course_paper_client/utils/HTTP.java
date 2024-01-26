@@ -1,6 +1,6 @@
 package com.example.course_paper_client.utils;
 
-import com.example.course_paper_client.HelloApplication;
+import com.example.course_paper_client.MainApp;
 import com.example.course_paper_client.exceptions.ApiResponseException;
 import com.example.course_paper_client.exceptions.NoConnectionException;
 import javafx.fxml.FXMLLoader;
@@ -40,9 +40,9 @@ public class HTTP {
             int code = conn.getResponseCode();
             if (code == 500) {
                 data.setTextErrorByAuth("Истекло время вашего сеанса. Просьба авторизоваться по новой.");
-                FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("auth-view.fxml"));
+                FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("auth-view.fxml"));
                 Scene scene = new Scene(fxmlLoader.load());
-                HelloApplication.changeScene(scene);
+                MainApp.changeScene(scene);
                 throw new ApiResponseException("Не валидный токен!");
             }
 
@@ -99,12 +99,9 @@ public class HTTP {
             httpURLConnection.setRequestProperty("Accept", "application/json");
             httpURLConnection.setRequestProperty("Content-Type", "application/json; utf-8");
             httpURLConnection.setDoOutput(true);
-            try (OutputStream os = httpURLConnection.getOutputStream()) {
-                byte[] input = jsonObject.toString().getBytes(StandardCharsets.UTF_8);
-                os.write(input, 0, input.length);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            OutputStream os = httpURLConnection.getOutputStream();
+            byte[] input = jsonObject.toString().getBytes(StandardCharsets.UTF_8);
+            os.write(input, 0, input.length);
 
             int code = httpURLConnection.getResponseCode();
 
@@ -174,9 +171,9 @@ public class HTTP {
             int code = httpURLConnection.getResponseCode();
             if (code == 500) {
                 data.setTextErrorByAuth("Истекло время вашего сеанса. Просьба авторизоваться по новой.");
-                FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("auth-view.fxml"));
+                FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("auth-view.fxml"));
                 Scene scene = new Scene(fxmlLoader.load());
-                HelloApplication.changeScene(scene);
+                MainApp.changeScene(scene);
                 throw new ApiResponseException("Не валидный токен!");
             }
 
@@ -247,9 +244,9 @@ public class HTTP {
             int code = httpURLConnection.getResponseCode();
             if (code == 500) {
                 data.setTextErrorByAuth("Истекло время вашего сеанса. Просьба авторизоваться по новой.");
-                FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("auth-view.fxml"));
+                FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("auth-view.fxml"));
                 Scene scene = new Scene(fxmlLoader.load());
-                HelloApplication.changeScene(scene);
+                MainApp.changeScene(scene);
                 throw new ApiResponseException("Не валидный токен!");
             }
 
@@ -320,9 +317,9 @@ public class HTTP {
             int code = http.getResponseCode();
             if (code == 500) {
                 data.setTextErrorByAuth("Истекло время вашего сеанса. Просьба авторизоваться по новой.");
-                FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("auth-view.fxml"));
+                FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("auth-view.fxml"));
                 Scene scene = new Scene(fxmlLoader.load());
-                HelloApplication.changeScene(scene);
+                MainApp.changeScene(scene);
                 throw new ApiResponseException("Не валидный токен!");
             }
 
@@ -379,9 +376,9 @@ public class HTTP {
             int code = http.getResponseCode();
             if (code == 500) {
                 data.setTextErrorByAuth("Истекло время вашего сеанса. Просьба авторизоваться по новой.");
-                FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("auth-view.fxml"));
+                FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("auth-view.fxml"));
                 Scene scene = new Scene(fxmlLoader.load());
-                HelloApplication.changeScene(scene);
+                MainApp.changeScene(scene);
                 throw new ApiResponseException("Не валидный токен!");
             }
 

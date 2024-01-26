@@ -13,14 +13,14 @@ import javafx.stage.StageStyle;
 
 import java.io.IOException;
 
-public class HelloApplication extends Application {
+public class MainApp extends Application {
     private static Stage stageMain;
     private static final DataSingleton data = DataSingleton.getInstance();
 
     @Override
     public void start(Stage stage) throws IOException {
         stageMain = stage;
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("auth-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("auth-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("HR Assistant");
         stage.setResizable(false);
@@ -54,7 +54,7 @@ public class HelloApplication extends Application {
      * @throws IOException если возникли ошибки при открытии окна.
      */
     public static void openNewStage(String viewFxml, String title, boolean resizable, StageStyle style, Modality modality) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource(viewFxml));
+        FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource(viewFxml));
         Scene scene = new Scene(fxmlLoader.load());
         Stage stage = new Stage(style);
         stage.setTitle(title);

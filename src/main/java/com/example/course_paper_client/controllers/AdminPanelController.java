@@ -1,6 +1,6 @@
 package com.example.course_paper_client.controllers;
 
-import com.example.course_paper_client.HelloApplication;
+import com.example.course_paper_client.MainApp;
 import com.example.course_paper_client.exceptions.ApiResponseException;
 import com.example.course_paper_client.exceptions.NoConnectionException;
 import com.example.course_paper_client.models.User;
@@ -137,7 +137,7 @@ public class AdminPanelController {
     }
 
     private void onClickOpenAboutAuthor(Event event) {
-        HelloApplication.showAlert("Об авторе", Alert.AlertType.INFORMATION, "Работа выполнена студентом группы ЗБ-ПИ21-2 Ошроевым Азаматом Заудиновичем", "");
+        MainApp.showAlert("Об авторе", Alert.AlertType.INFORMATION, "Работа выполнена студентом группы ЗБ-ПИ21-2 Ошроевым Азаматом Заудиновичем", "");
     }
 
     private void onClickUpdateTable(Event event) {
@@ -146,14 +146,14 @@ public class AdminPanelController {
             table_users.getItems().clear();
             fillTable();
         } catch (NoConnectionException | ApiResponseException e) {
-            HelloApplication.showAlert("Ошибка", Alert.AlertType.INFORMATION, "Ошибка при обновлении данных", e.getMessage());
+            MainApp.showAlert("Ошибка", Alert.AlertType.INFORMATION, "Ошибка при обновлении данных", e.getMessage());
         } catch (JSONException | IOException e) {
             System.out.println(e.getMessage());
         }
     }
 
     private void openNewUserStage() throws IOException {
-        HelloApplication.openNewStage(
+        MainApp.openNewStage(
                 "new-user-view.fxml",
                 "Добавление нового пользователя",
                 false,
@@ -163,7 +163,7 @@ public class AdminPanelController {
 
     private void openUserItem(User user) throws IOException {
         data.setSelectedUser(user);
-        HelloApplication.openNewStage(
+        MainApp.openNewStage(
                 "user-item-view.fxml",
                 "Пользователь",
                 false,
@@ -172,9 +172,9 @@ public class AdminPanelController {
     }
 
     private void changeScene(String fxmlFileName) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource(fxmlFileName));
+        FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource(fxmlFileName));
         Scene scene = new Scene(fxmlLoader.load());
-        HelloApplication.changeScene(scene);
+        MainApp.changeScene(scene);
     }
 
     private void initTableColumns() {

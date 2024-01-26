@@ -1,6 +1,6 @@
 package com.example.course_paper_client.controllers;
 
-import com.example.course_paper_client.HelloApplication;
+import com.example.course_paper_client.MainApp;
 import com.example.course_paper_client.exceptions.ApiResponseException;
 import com.example.course_paper_client.exceptions.NoConnectionException;
 import com.example.course_paper_client.models.User;
@@ -76,7 +76,7 @@ public class UserItemController {
                         data.getSelectedUser());
                 onClickClose(event);
             } catch (NoConnectionException | ApiResponseException e) {
-                HelloApplication.showAlert("Ошибка", Alert.AlertType.INFORMATION, "Ошибка при попытке обновления пользователя", e.getMessage());
+                MainApp.showAlert("Ошибка", Alert.AlertType.INFORMATION, "Ошибка при попытке обновления пользователя", e.getMessage());
             } catch (JSONException e) {
                 System.out.println(e.getMessage());
             }
@@ -86,14 +86,14 @@ public class UserItemController {
     private void onClickDeleted(Event event) {
         try {
             ButtonType result =
-                    HelloApplication.showWarningAlert("Удаление", Alert.AlertType.WARNING, "Удалить пользователя?", "");
+                    MainApp.showWarningAlert("Удаление", Alert.AlertType.WARNING, "Удалить пользователя?", "");
 
             if (result == ButtonType.OK) {
                 MainServiceApi.deleteUser(data.getToken(), data.getSelectedUser().getId());
                 onClickClose(event);
             }
         } catch (NoConnectionException | ApiResponseException e) {
-            HelloApplication.showAlert("Ошибка", Alert.AlertType.INFORMATION, "Ошибка при удалении пользователя", e.getMessage());
+            MainApp.showAlert("Ошибка", Alert.AlertType.INFORMATION, "Ошибка при удалении пользователя", e.getMessage());
         } catch (JSONException e) {
             System.out.println(e.getMessage());
         }

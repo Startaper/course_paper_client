@@ -1,6 +1,6 @@
 package com.example.course_paper_client.controllers;
 
-import com.example.course_paper_client.HelloApplication;
+import com.example.course_paper_client.MainApp;
 import com.example.course_paper_client.exceptions.ApiResponseException;
 import com.example.course_paper_client.exceptions.NoConnectionException;
 import com.example.course_paper_client.services.MainServiceApi;
@@ -149,9 +149,9 @@ public class AuthController {
 
     private void changeScene() throws IOException {
         data.setToken(token);
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("main-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("main-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
-        HelloApplication.changeScene(scene);
+        MainApp.changeScene(scene);
     }
 
     /**

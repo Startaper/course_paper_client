@@ -1,6 +1,6 @@
 package com.example.course_paper_client.controllers;
 
-import com.example.course_paper_client.HelloApplication;
+import com.example.course_paper_client.MainApp;
 import com.example.course_paper_client.exceptions.ApiResponseException;
 import com.example.course_paper_client.exceptions.NoConnectionException;
 import com.example.course_paper_client.models.Resume;
@@ -174,7 +174,7 @@ public class MainController {
             dataSingleton.setUsers(MainServiceApi.getAllUsers(dataSingleton.getToken()));
             changeScene("admin-panel-view.fxml");
         } catch (NoConnectionException | ApiResponseException e) {
-            HelloApplication.showAlert("Ошибка", Alert.AlertType.INFORMATION, "Ошибка при получении списка пользователей", e.getMessage());
+            MainApp.showAlert("Ошибка", Alert.AlertType.INFORMATION, "Ошибка при получении списка пользователей", e.getMessage());
         } catch (JSONException | IOException e) {
             System.out.println(e.getMessage());
         }
@@ -188,7 +188,7 @@ public class MainController {
                 MainServiceApi.addResumes(file, dataSingleton.getToken());
             }
         } catch (NoConnectionException | ApiResponseException e) {
-            HelloApplication.showAlert("Ошибка", Alert.AlertType.INFORMATION, "Ошибка при добавлении данных", e.getMessage());
+            MainApp.showAlert("Ошибка", Alert.AlertType.INFORMATION, "Ошибка при добавлении данных", e.getMessage());
         } catch (JSONException | IOException e) {
             System.out.println(e.getMessage());
         }
@@ -216,7 +216,7 @@ public class MainController {
 //            table.getItems().;
             fillTable();
         } catch (NoConnectionException | ApiResponseException e) {
-            HelloApplication.showAlert("Ошибка", Alert.AlertType.INFORMATION, "Ошибка при обновлении данных", e.getMessage());
+            MainApp.showAlert("Ошибка", Alert.AlertType.INFORMATION, "Ошибка при обновлении данных", e.getMessage());
         } catch (JSONException | IOException e) {
             System.out.println(e.getMessage());
         }
@@ -236,7 +236,7 @@ public class MainController {
     }
 
     private void onClickOpenAboutAuthor(Event event) {
-        HelloApplication.showAlert("Об авторе", Alert.AlertType.INFORMATION, "Работа выполнена студентом группы ЗБ-ПИ21-2 Ошроевым Азаматом Заудиновичем", "");
+        MainApp.showAlert("Об авторе", Alert.AlertType.INFORMATION, "Работа выполнена студентом группы ЗБ-ПИ21-2 Ошроевым Азаматом Заудиновичем", "");
     }
 
     private void onClickOpenFilters(Event event) {
@@ -251,14 +251,14 @@ public class MainController {
     private void onClickDeletedAll(Event event) {
         try {
             ButtonType result =
-                    HelloApplication.showWarningAlert("Удаление", Alert.AlertType.WARNING, "Удалить все резюме?", "");
+                    MainApp.showWarningAlert("Удаление", Alert.AlertType.WARNING, "Удалить все резюме?", "");
             if (result == ButtonType.OK) {
                 deleteAllResume();
                 dataSingleton.getResumes().clear();
                 fillTable();
             }
         } catch (NoConnectionException | ApiResponseException e) {
-            HelloApplication.showAlert("Ошибка", Alert.AlertType.INFORMATION, "Ошибка при удалении данных", e.getMessage());
+            MainApp.showAlert("Ошибка", Alert.AlertType.INFORMATION, "Ошибка при удалении данных", e.getMessage());
         } catch (JSONException e) {
             System.out.println(e.getMessage());
         }
@@ -277,13 +277,13 @@ public class MainController {
     }
 
     private void changeScene(String fxmlFileName) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource(fxmlFileName));
+        FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource(fxmlFileName));
         Scene scene = new Scene(fxmlLoader.load());
-        HelloApplication.changeScene(scene);
+        MainApp.changeScene(scene);
     }
 
     private void openFiltersStage() throws IOException {
-        HelloApplication.openNewStage(
+        MainApp.openNewStage(
                 "filters-view.fxml",
                 "Фильтры",
                 false,
@@ -293,7 +293,7 @@ public class MainController {
 
     private void openResumeStage(Resume resume) throws IOException {
         dataSingleton.setSelectedResume(resume);
-        HelloApplication.openNewStage(
+        MainApp.openNewStage(
                 "resume-view.fxml",
                 "Резюме",
                 false,
