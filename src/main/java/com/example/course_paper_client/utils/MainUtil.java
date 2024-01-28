@@ -17,6 +17,8 @@ import java.util.*;
  */
 public final class MainUtil {
 
+    private final static DataSingleton data = DataSingleton.getInstance();
+
     /**
      * Метод возвращает строку с json, прочитанный из получаемого файла
      *
@@ -194,6 +196,9 @@ public final class MainUtil {
      */
     public static List<Resume> searchByText(List<Resume> resumes, String text) {
         Map<String, List<String>> listStrBySearch = new HashMap<>();
+        if (resumes == null || resumes.isEmpty()) {
+            resumes = data.getResumes();
+        }
         for (Resume resume : resumes) {
             listStrBySearch.put(resume.getId(), Arrays.stream(resume.getSearchField().split("[ .,\\-+='/?!`~@#$%^&*()]")).toList());
         }

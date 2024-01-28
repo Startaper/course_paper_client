@@ -23,6 +23,7 @@ public class DataSingleton {
     private WarningModel warningModel;
     private String textErrorByAuth;
     private List<Resume> resumes;
+    private List<Resume> filteredResumes;
     private List<User> users;
     private Map<String, String> filters;
 
@@ -119,5 +120,13 @@ public class DataSingleton {
 
     public void setUsers(List<User> users) {
         this.users = users;
+    }
+
+    public List<Resume> getFilteredResumes() {
+        return filteredResumes;
+    }
+
+    public void setFilteredResumes(List<Resume> filteredResumes) {
+        this.filteredResumes = filteredResumes;
     }
 }

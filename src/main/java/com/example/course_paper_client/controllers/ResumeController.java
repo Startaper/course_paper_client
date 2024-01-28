@@ -235,6 +235,7 @@ public class ResumeController {
                     MainApp.showWarningAlert("Удаление", Alert.AlertType.WARNING, "Удалить резюме?", "");
 
             if (result == ButtonType.OK) {
+                dataSingleton.getResumes().remove(dataSingleton.getSelectedResume());
                 MainServiceApi.deleteResume(dataSingleton.getToken(), dataSingleton.getSelectedResume().getId());
                 MainApp.showAlert("Удаление", Alert.AlertType.INFORMATION, "Резюме успешно удалено", "");
                 onClickClose(event);

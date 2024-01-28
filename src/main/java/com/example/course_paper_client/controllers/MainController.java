@@ -30,6 +30,8 @@ import org.json.JSONException;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.HexFormat;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class MainController {
@@ -130,7 +132,7 @@ public class MainController {
         }
 
         initTableColumns();
-        fillTable();
+        fillTable(dataSingleton.getResumes());
 
         btn_open_filters.setOnAction(this::onClickOpenFilters);
         btn_deleted_all.setOnAction(this::onClickDeletedAll);
@@ -162,10 +164,10 @@ public class MainController {
     }
 
     private void onClickSearch(Event event) {
-        onClickRefreshTable(event);
+        fillTable(dataSingleton.getResumes());
         if (!field_search_text.getText().isBlank()) {
-            dataSingleton.setResumes(MainUtil.searchByText(dataSingleton.getResumes(), field_search_text.getText()));
-            fillTable();
+            dataSingleton.setFilteredResumes(MainUtil.searchByText(dataSingleton.getFilteredResumes(), field_search_text.getText()));
+            fillTable(dataSingleton.getFilteredResumes());
         }
     }
 
@@ -198,7 +200,7 @@ public class MainController {
     private void onClickResetFilters(Event event) {
         dataSingleton.setFilters(null);
         field_search_text.clear();
-        onClickRefreshTable(event);
+        fillTable(dataSingleton.getResumes());
     }
 
     private void onClickLogout(Event event) {
@@ -213,8 +215,7 @@ public class MainController {
     private void onClickRefreshTable(Event event) {
         try {
             dataSingleton.setResumes(MainServiceApi.getAllResumes(dataSingleton.getToken(), dataSingleton.getFilters()));
-//            table.getItems().;
-            fillTable();
+            fillTable(dataSingleton.getResumes());
         } catch (NoConnectionException | ApiResponseException e) {
             MainApp.showAlert("Ошибка", Alert.AlertType.INFORMATION, "Ошибка при обновлении данных", e.getMessage());
         } catch (JSONException | IOException e) {
@@ -228,7 +229,7 @@ public class MainController {
             Resume resume = table.getSelectionModel().getSelectedItem();
             if (resume != null && keyCode.getName().equals("Enter")) {
                 openResumeStage(resume);
-                onClickRefreshTable(keyEvent);
+                fillTable(dataSingleton.getResumes());
             }
         } catch (IOException e) {
             System.out.println(e.getMessage());
@@ -242,9 +243,14 @@ public class MainController {
     private void onClickOpenFilters(Event event) {
         try {
             openFiltersStage();
-            onClickRefreshTable(event);
+            dataSingleton.setFilteredResumes(MainServiceApi.getAllResumes(dataSingleton.getToken(), dataSingleton.getFilters()));
+            fillTable(dataSingleton.getFilteredResumes());
         } catch (IOException e) {
             System.out.println(e.getMessage());
+        } catch (NoConnectionException e) {
+            MainApp.showAlert("Ошибка", Alert.AlertType.INFORMATION, "Ошибка при соединении с сервером", e.getMessage());
+        } catch (JSONException | ApiResponseException e) {
+            MainApp.showAlert("Ошибка", Alert.AlertType.INFORMATION, "Сервер вернул неизвестную ошибку", e.getMessage());
         }
     }
 
@@ -255,7 +261,7 @@ public class MainController {
             if (result == ButtonType.OK) {
                 deleteAllResume();
                 dataSingleton.getResumes().clear();
-                fillTable();
+                fillTable(dataSingleton.getResumes());
             }
         } catch (NoConnectionException | ApiResponseException e) {
             MainApp.showAlert("Ошибка", Alert.AlertType.INFORMATION, "Ошибка при удалении данных", e.getMessage());
@@ -269,7 +275,7 @@ public class MainController {
             Resume resume = table.getSelectionModel().getSelectedItem();
             if (resume != null && event.getClickCount() == 2) {
                 openResumeStage(resume);
-                onClickRefreshTable(event);
+                fillTable(dataSingleton.getResumes());
             }
         } catch (IOException e) {
             System.out.println(e.getMessage());
@@ -301,8 +307,8 @@ public class MainController {
                 Modality.APPLICATION_MODAL);
     }
 
-    private void fillTable() {
-        table.setItems(FXCollections.observableList(dataSingleton.getResumes()));
+    private void fillTable(List<Resume> resumes) {
+        table.setItems(FXCollections.observableList(resumes));
     }
 
     private void deleteAllResume() throws NoConnectionException, ApiResponseException, JSONException {
